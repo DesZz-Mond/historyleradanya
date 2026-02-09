@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Даня + Лера | История Любви</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #fff0f3;
+            --accent-gold: #ffb703;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .font-romantic { font-family: 'Pacifico', cursive; }
+        .font-handwritten { font-family: 'Caveat', cursive; }
+
+        /* Анимация сердечек */
+        .heart-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            animation: float 15s linear infinite;
+            color: rgba(255, 77, 109, 0.2);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Кружочки */
+        .video-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--primary-pink);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background: #000;
+        }
+
+        .video-circle video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Сетка Instagram */
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .instagram-grid img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .instagram-grid img:hover { transform: scale(1.05); }
+
+        /* Таймлайн элементы */
+        .timeline-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .poem-box {
+            background: rgba(255, 77, 109, 0.05);
+            border-left: 4px solid var(--primary-pink);
+            padding: 1.5rem;
+            border-radius: 0 15px 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-bg" id="heart-bg"></div>
+<style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --deep-dark: #0f0c29;
+            --accent-gold: #ffb703;
+            --text-light: #f8f9fa;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Анимированный градиент для текста */
+        .gradient-text {
+            background: linear-gradient(to right, #ff4d6d, #ffb703, #ff4d6d);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Стиль таймера в темной теме */
+        #timer-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.2);
+        }
+
+        .timer-val {
+            color: var(--primary-pink);
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-bg" id="heart-bg"></div>
+
+    <header class="min-h-screen flex flex-col items-center justify-center text-center p-6">
+        <h1 class="text-7xl md:text-9xl font-romantic gradient-text mb-8">Лера + Даня</h1>
+        
+        <div id="timer-container" class="rounded-3xl p-8 max-w-2xl w-full mx-4 mb-12 timeline-item">
+            <p class="text-gray-400 uppercase tracking-widest text-sm mb-6 font-semibold">Мы вместе уже:</p>
+            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div>
+                    <span id="days" class="text-5xl font-bold timer-val">00</span>
+                    <p class="text-xs text-gray-500 mt-2">дней</p>
+                </div>
+                <div>
+                    <span id="hours" class="text-5xl font-bold timer-val">00</span>
+                    <p class="text-xs text-gray-500 mt-2">часов</p>
+                </div>
+                <div>
+                    <span id="minutes" class="text-5xl font-bold timer-val">00</span>
+                    <p class="text-xs text-gray-500 mt-2">минут</p>
+                </div>
+                <div>
+                    <span id="seconds" class="text-5xl font-bold timer-val">00</span>
+                    <p class="text-xs text-gray-500 mt-2">секунд</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item max-w-2xl">
+            <p class="text-2xl font-handwritten italic text-pink-300">
+                Наша история началась 27 августа 2025 года в 22:57:15. 
+                Тот самый миг, когда мир стал ярче. ✨
+            </p>
+        </div>
+    </header>
+<script>
+    // Устанавливаем дату начала
+    const startDate = new Date("August 27, 2025 22:57:15").getTime();
+
+    function updateTimer() {
+        // 1. Получаем текущую дату и время в формате строки для Киева
+    const kyivTimeStr = new Date().toLocaleString("en-US", { timeZone: "Europe/Kyiv" });
+    
+    // 2. Превращаем эту строку в объект даты, чтобы получить миллисекунды
+    const now = new Date(kyivTimeStr).getTime();
+    
+    const distance = now - startDate;
+
+        // Вычисления для дней, часов, минут и секунд
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Вывод результата в элементы с соответствующими id
+        document.getElementById("days").innerHTML = days;
+        document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+        document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+        document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+    }
+
+    // Запускаем обновление каждую секунду
+    setInterval(updateTimer, 1000);
+    updateTimer(); // Инициализация при загрузке
+</script>
+<main class="max-w-4xl mx-auto px-6 pb-20">
+        
+        <section class="timeline-item flex flex-col items-center mb-32 text-center pt-10">
+            <div class="w-20 h-20 bg-pink-600 rounded-full flex items-center justify-center text-white mb-8 shadow-[0_0_20px_rgba(219,39,119,0.6)] animate-pulse">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+            </div>
+            <h2 class="text-4xl font-bold mb-4 text-pink-400">27 августа 2025</h2>
+            <p class="text-2xl font-mono text-pink-200 mb-6">22:57:15</p>
+            <div class="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 max-w-lg shadow-xl">
+                <p class="text-lg italic text-gray-200">
+                    В этот момент началась наша история. Тот самый миг, который изменил всё. ❤️
+                </p>
+            </div>
+        </section>
+
+        <section class="timeline-item mb-32">
+            <div class="flex flex-col items-center gap-10">
+                <div class="text-center">
+                    <h3 class="text-4xl font-romantic text-accent-gold mb-2">Первая встреча</h3>
+                    <p class="text-xl text-gray-400 italic mb-8">6 сентября, вечер</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="flex flex-col items-center gap-4">
+                        <div class="video-circle border-pink-500 shadow-[0_0_25px_rgba(255,77,109,0.4)]">
+                            <video controls loop poster="https://drive.google.com/uc?export=view&id=1LKlLc95WqJg7xeKoWoJMZlDOmWtBA_ph">
+                                <source src="https://drive.google.com/uc?export=view&id=18BcJ1lEkgN910kqSBJjRLIYb1HNtMBji" type="video/mp4">
+                            </video>
+                        </div>
+                        <span class="text-sm font-handwritten text-pink-300 text-xl">первая встреча.mp4</span>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-4">
+                        <img src="https://drive.google.com/uc?export=view&id=1LKlLc95WqJg7xeKoWoJMZlDOmWtBA_ph" 
+                             alt="Первое фото" 
+                             class="rounded-xl border-8 border-white/10 shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 cursor-zoom-in max-w-[280px]"
+                             onclick="openModal(this.src)">
+                        <span class="text-sm font-handwritten text-pink-300 text-xl">первое фото.jpg</span>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex flex-col items-center gap-6">
+                    <div class="bg-white/5 backdrop-blur-sm p-4 rounded-3xl border border-pink-500/30">
+                        <p class="text-center text-gray-200 mb-4 px-4">В этот же вечер — наши самые первые обнимашки...</p>
+                        <div class="video-circle mx-auto">
+                            <video controls loop>
+                                <source src="https://drive.google.com/uc?export=view&id=1y_V7r7HrIgtvP0P_5JyYaa96vIMYWymx" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    <span class="text-sm font-handwritten text-pink-300 text-xl">Первые обнимашки.mp4</span>
+                </div>
+            </div>
+        </section>
+<section class="timeline-item mb-32 flex flex-col items-center">
+            <h3 class="text-3xl font-bold mb-6 text-pink-300">8 сентября</h3>
+            <div class="video-circle shadow-[0_0_20px_rgba(255,77,109,0.3)]">
+                <video controls loop>
+                    <source src="https://drive.google.com/uc?export=view&id=101O950Etith7tjMCxITEGHt1v62wYSse" type="video/mp4">
+                </video>
+            </div>
+            <p class="mt-6 text-gray-400 italic">Встретились снова через два дня ❤️</p>
+            <span class="text-xs font-handwritten text-pink-500/50 mt-2">вторые обнимашки.mp4</span>
+        </section>
+
+        <section class="timeline-item mb-40 text-center">
+            <div class="relative inline-block">
+                <div class="absolute -inset-4 bg-pink-600 rounded-3xl blur-xl opacity-20 animate-pulse"></div>
+                
+                <div class="relative bg-white/5 backdrop-blur-xl p-10 rounded-3xl border-2 border-pink-500/50 shadow-[0_0_30px_rgba(255,77,109,0.3)]">
+                    <h3 class="text-5xl font-romantic text-pink-500 mb-6">Официальное начало</h3>
+                    <p class="text-3xl font-bold text-white mb-2">12 сентября</p>
+                    <p class="text-2xl font-mono text-accent-gold">15:10:58</p>
+                    <div class="mt-6 h-px w-full bg-gradient-to-r from-transparent via-pink-500 to-transparent"></div>
+                    <p class="text-gray-300 mt-6 italic">С этого момента мы — одно целое. Навсегда. ✨</p>
+                </div>
+            </div>
+        </section>
+
+        <h2 class="text-center text-5xl font-romantic mb-16 gradient-text">Продолжение сентября</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-32">
+            
+            <div class="timeline-item flex flex-col items-center">
+                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">16 сентября</span>
+                <div class="video-circle shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=1Ox33xEX3uBcxyWfnh_pgS_wzyHJsGCMf" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-sm mt-4 italic text-gray-400">завариваем чайочек ☕</p>
+            </div>
+
+            <div class="timeline-item flex flex-col items-center">
+                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">17 сентября</span>
+                <div class="video-circle border-accent-gold shadow-[0_0_20px_rgba(255,183,3,0.3)]">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=1hifHGr4ZTUAKwDZu1-Mrn9TyBa6tJQ_R" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-sm mt-4 text-accent-gold font-semibold uppercase tracking-widest">Тигрица богиня 🐯</p>
+            </div>
+
+            <div class="timeline-item flex flex-col items-center">
+                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">18 сентября</span>
+                <div class="video-circle">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=1-xEYs3lpH7QZwDmbYu2H0a7bN5y46Yn9" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-sm mt-4 italic text-gray-400">в переодевалке 👗</p>
+            </div>
+
+            <div class="timeline-item flex flex-col items-center">
+                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">19 сентября</span>
+                <div class="video-circle border-blue-400 shadow-[0_0_20px_rgba(96,165,250,0.3)]">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=1WeRSd736jVS-WSHZuIWQrWo5ztzqWRpB" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-sm mt-4 italic text-gray-400">После прогулки по Киеву вечером ✨</p>
+            </div>
+
+            <div class="timeline-item flex flex-col items-center">
+                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">20 сентября</span>
+                <div class="video-circle">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=1gFCbO1poFLOS9A3GfjPhxkSj5W0Gl7Pt" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-sm mt-4 italic text-gray-400">топаем на дополнительное 🎒</p>
+            </div>
+
+            <div class="timeline-item flex flex-col items-center">
+                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">21 сентября</span>
+                <div class="video-circle border-purple-400">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=1yEn3V-l_nrF8Xndje4x-LKazBPA2zkRt" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-sm mt-4 italic text-gray-400">на дне рождения 🎂</p>
+            </div>
+        </div>
+
+        <section class="timeline-item mb-32 flex flex-col items-center">
+            <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">26 сентября</span>
+            <div class="video-circle shadow-[0_0_20px_rgba(255,77,109,0.3)]">
+                <video controls loop>
+                    <source src="https://drive.google.com/uc?export=view&id=1mVDKA1BW_iNkBqlVgy_hqMob48G2s5n1" type="video/mp4">
+                </video>
+            </div>
+            <p class="mt-4 text-gray-300 italic">милые волосы ✨</p>
+        </section>
+<section class="timeline-item mb-32">
+            <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
+                <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-blue-500/30 text-center w-full md:w-1/2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                    <div class="text-4xl mb-4">📞</div>
+                    <h3 class="text-2xl font-bold text-blue-300 mb-2">24 сентября</h3>
+                    <p class="text-gray-300 italic">Впервые поговорили по телефону. Твой голос стал еще ближе...</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-purple-500/30 text-center w-full md:w-1/2 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                    <div class="text-4xl mb-4">🎥</div>
+                    <h3 class="text-2xl font-bold text-purple-300 mb-2">25 сентября</h3>
+                    <p class="text-gray-300 italic">Первый видеозвонок. Целый вечер смотрели друг на друга сквозь километры.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="timeline-item mb-40">
+            <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">28 сентября: Утро, изменившее пульс</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-end">
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-pink-500 shadow-[0_0_20px_rgba(255,77,109,0.5)]">
+                        <video controls loop>
+                            <source src="https://drive.google.com/uc?export=view&id=1Jd1KWjEnE3gwnNK8GJLsTxMceKEMzWbm" type="video/mp4">
+                        </video>
+                    </div>
+                    <p class="text-xs mt-4 text-pink-300 text-center font-handwritten text-xl">первый поцелуйчик от леры 💋</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-accent-gold scale-110 shadow-[0_0_30px_rgba(255,183,3,0.4)]">
+                        <video controls loop>
+                            <source src="https://drive.google.com/uc?export=view&id=1-Ey9FLeb-gKf8XQLyl8Mca4sYTzOdwaE" type="video/mp4">
+                        </video>
+                    </div>
+                    <p class="text-xs mt-6 text-accent-gold text-center font-bold tracking-widest">РЕАКЦИЯ ДАНИ 😍</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-pink-300">
+                        <video controls loop>
+                            <source src="https://drive.google.com/uc?export=view&id=16rwyyJSgo9zDkNdhOXAF9nVK4q4I29JA" type="video/mp4">
+                        </video>
+                    </div>
+                    <p class="text-xs mt-4 text-pink-200 text-center font-handwritten text-xl">красавица) ✨</p>
+                </div>
+            </div>
+
+            <div class="mt-24 flex flex-col items-center">
+                <div class="bg-white/5 backdrop-blur-lg p-8 rounded-[40px] border border-pink-500/40 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <p class="text-center text-xl text-gray-200 mb-6 italic">Тот же день. Служба. Пономарка... <br>Твой первый поцелуй в ответ. 🕊️</p>
+                    <div class="video-circle mx-auto border-4 border-white/20">
+                        <video controls loop>
+                            <source src="https://drive.google.com/uc?export=view&id=1pvFy7ruMn5oXSXmlaax_vjzNvBdo66rQ" type="video/mp4">
+                        </video>
+                    </div>
+                    <p class="text-center mt-4 font-bold text-pink-400">в пономарке на службе 🙏</p>
+                </div>
+            </div>
+        </section>
+<section class="timeline-item mb-32">
+            <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">Октябрь: Когда слова становятся стихами</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-pink-500 shadow-[0_0_15px_rgba(255,77,109,0.3)]">
+                        <video controls loop>
+                            <source src="https://drive.google.com/uc?export=view&id=1pCPLnV-nsijPGugP0UMTqLrQobt2h-hq" type="video/mp4">
+                        </video>
+                    </div>
+                    <p class="text-sm mt-4 text-pink-200 italic">тоже поцелуйчик 3 октября 💋</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-accent-gold">
+                        <video controls loop>
+                            <source src="https://drive.google.com/uc?export=view&id=1Idi5Y2Bn_Mq8DFC6GF38lPlWi_pR4_on" type="video/mp4">
+                        </video>
+                    </div>
+                    <p class="text-sm mt-4 text-accent-gold italic">5 октября прическа ✨</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="timeline-item mb-32">
+            <div class="relative max-w-2xl mx-auto">
+                <div class="absolute -top-10 -right-5 text-5xl opacity-50">🖋️</div>
+                
+                <div class="poem-box bg-white/5 backdrop-blur-md p-10 rounded-br-[60px] rounded-tl-[60px] border-l-4 border-pink-500 shadow-2xl">
+                    <p class="font-handwritten text-3xl leading-relaxed text-pink-100 italic">
+                        "ты свет в моем мире, как солнышко утром...<br>
+                        смотрю на тебя и не верю ничуть...<br>
+                        ты просто прекрасна и в сердце так шумно...<br>
+                        люблю тебя очень, вот в чем вся моя суть"
+                    </p>
+                    <p class="text-right mt-6 text-pink-400 font-bold tracking-widest">— 10 октября 📝</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-40">
+            <div class="flex flex-col items-center">
+                <div class="video-circle scale-90 border-blue-300">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=14-y5sVdjOJaAJN7GpcfcYEzxrTHqMcHQ" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-xs mt-2 text-gray-400 italic">сонная лерочка 😴</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+                <div class="video-circle scale-90 border-pink-400">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=1aLEHdXFzztJ5DcTuk9EGih2gga8ib4QB" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-xs mt-2 text-gray-400 italic">11 октября 🤍</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+                <div class="video-circle scale-90 border-accent-gold">
+                    <video controls loop>
+                        <source src="https://drive.google.com/uc?export=view&id=1fVY5_2s1N0XGc-k3B9m3m5DEevFWwByj" type="video/mp4">
+                    </video>
+                </div>
+                <p class="text-xs mt-2 text-gray-400 italic">На море 🌊</p>
+            </div>
+        </div>
+<section class="timeline-item mb-40">
+            <div class="relative p-1 bg-gradient-to-b from-pink-500/20 to-transparent rounded-[50px]">
+                <div class="bg-[#1a1645]/80 backdrop-blur-2xl p-8 md:p-12 rounded-[48px] border border-white/10 shadow-2xl">
+                    
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl md:text-5xl font-romantic text-accent-gold mb-4">18 октября</h2>
+                        <p class="text-xl text-pink-200 italic font-handwritten text-3xl">Наш Особенный День</p>
+                    </div>
+
+                    <div class="space-y-10 text-center text-gray-200">
+                        <p class="text-lg leading-relaxed max-w-2xl mx-auto">
+                            Первая встреча после более месяца в онлайне. 
+                            В <span class="text-accent-gold font-bold">13:08</span> случился наш первый настоящий поцелуй. 
+                            Его нет на камеру, но он навсегда запечатлен в сердце. 💋
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div class="flex flex-col items-center">
+                                <div class="video-circle border-white/20 scale-110">
+                                    <video controls loop>
+                                        <source src="https://drive.google.com/uc?export=view&id=18BcJ1lEkgN910kqSBJjRLIYb1HNtMBji" type="video/mp4">
+                                    </video>
+                                </div>
+                                <p class="text-xs mt-4 text-gray-400 italic">первый поцелуй.mp4</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <img src="https://drive.google.com/uc?export=view&id=1s1rg3n9zHZ9n9C6Q8qs8zur49r0XiQxs" 
+                                     class="rounded-2xl border-4 border-white/10 shadow-xl hover:scale-105 transition-transform cursor-zoom-in w-64"
+                                     onclick="openModal(this.src)">
+                                <p class="text-xs mt-4 text-gray-400 italic">в тейсти.jpg</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-pink-600/10 p-6 rounded-3xl border border-pink-500/20 mt-10">
+                            <p class="font-handwritten text-2xl text-pink-300 mb-2">"В этот день мы купили блокнотики расстояния..." 📓</p>
+                            <p class="text-sm text-gray-400">Чтобы заполнять их в разлуке и меняться при каждой встрече.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-10">
+                            <div class="flex flex-col items-center">
+                                <img src="https://drive.google.com/uc?export=view&id=1DNc6Lma11Ezojr9K-blqU7LXzJqNtNEN" 
+                                     class="rounded-2xl border-4 border-white/10 shadow-xl hover:scale-105 transition-transform cursor-zoom-in w-64"
+                                     onclick="openModal(this.src)">
+                                <p class="text-xs mt-4 text-gray-400 italic">фото поцелуя.jpg</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="video-circle border-white/20 scale-90">
+                                    <video controls loop>
+                                        <source src="https://drive.google.com/uc?export=view&id=1htIcLd6SfZo8KGqrTX5WTs7H0vjBPxzP" type="video/mp4">
+                                    </video>
+                                </div>
+                                <p class="text-xs mt-4 text-gray-400 italic">поцелуй в парке.mp4</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="timeline-item mb-40">
+            <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">29 октября: Встреча через 11 дней</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
+                <div class="flex flex-col items-center group">
+                    <div class="relative">
+                        <div class="absolute -inset-2 bg-accent-gold/30 rounded-full blur opacity-0 group-hover:opacity-100 transition"></div>
+                        <div class="video-circle border-accent-gold relative">
+                            <video controls loop>
+                                <source src="https://drive.google.com/uc?export=view&id=1rM7yB_nnD8MKcXxswuqDtuouDpytfI7y" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-accent-gold font-bold italic text-center">Поменялись блокнотиками на набережной 📓🖋️</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-pink-500">
+                        <video controls loop>
+                            <source src="https://drive.google.com/uc?export=view&id=1So3yZlpjX2Qh1MGc-Okyd9u_omMqHmNR" type="video/mp4">
+                        </video>
+                    </div>
+                    <p class="mt-4 text-pink-300 italic">Целуемся)) 💋</p>
+                </div>
+            </div>
+
+            <div class="instagram-grid mb-16">
+                <img src="https://drive.google.com/uc?export=view&id=1SaVPfG2GZhlxH5zb5FJPdOIRZvmrV5tV" alt="За ручки" onclick="openModal(this.src)">
+                <img src="https://drive.google.com/uc?export=view&id=1adML-TVkHE2AGkUBBmePEumI7-Aqc9jM" alt="За ручки 2" onclick="openModal(this.src)">
+                <img src="https://drive.google.com/uc?export=view&id=1GrDdnNo9FFYlBZoebE4xBTn-lBqeLfZS" alt="Совместная" onclick="openModal(this.src)">
+            </div>
+
+            <div class="bg-white/5 backdrop-blur-md p-8 rounded-[40px] border border-white/10">
+                <p class="text-center text-gray-400 mb-8 italic">Уже дома... Теплая память друг о друге 🎀</p>
+                <div class="flex flex-col md:flex-row justify-around items-center gap-8">
+                    <div class="flex flex-col items-center">
+                        <div class="video-circle scale-90 border-pink-300">
+                            <video controls loop>
+                                <source src="https://drive.google.com/uc?export=view&id=1NDg39QQwWxhvUAGAOrTeuB8qKnNcpCI0" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="text-xs mt-3 text-pink-200">резиночка от лерочки</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="video-circle scale-90 border-blue-300">
+                            <video controls loop>
+                                <source src="https://drive.google.com/uc?export=view&id=1KEG3zFow7Hh4PA572a8CkglsmQO0uLU-" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="text-xs mt-3 text-blue-200">резиночка от данечки</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="timeline-item mb-40">
+            <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">Конец октября — Начало ноября</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start mb-20">
+                <div class="flex flex-col items-center">
+                    <div class="relative p-2 bg-white/10 rounded-xl shadow-2xl">
+                        <div class="absolute -inset-1 bg-gradient-to-tr from-pink-500 to-accent-gold rounded-xl blur opacity-30"></div>
+                        <div class="relative bg-black rounded-lg overflow-hidden border border-white/20">
+                            <video controls class="w-full max-w-[300px]">
+                                <source src="https://drive.google.com/uc?export=view&id=1I4Qovj9yvUI93ofiHfCcI3IBzEzXWNUU" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    <p class="font-handwritten text-2xl text-accent-gold mt-6">30 октября: Нарисовал Лерочку 🎨</p>
+                </div>
+
+                <div class="space-y-12">
+                    <div class="flex items-center gap-6">
+                        <div class="video-circle w-32 h-32 flex-shrink-0 border-pink-400">
+                            <video controls loop><source src="https://drive.google.com/uc?export=view&id=1ChDiwLyfUGcSh-v72633L580PGGf0uRw"></video>
+                        </div>
+                        <p class="text-gray-300 italic text-sm">31 октября: милая лерочка с поцелуйчиком ☀️💋</p>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="video-circle w-32 h-32 flex-shrink-0 border-accent-gold">
+                            <video controls loop><source src="https://drive.google.com/uc?export=view&id=1s6ICqY3PiFew8tpfdTQY5aF9Ae4pqr65"></video>
+                        </div>
+                        <p class="text-gray-300 italic text-sm">31 октября: на фоне солнышка</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative py-20 px-6 overflow-hidden rounded-[60px] border border-pink-500/30 bg-black/40 backdrop-blur-3xl shadow-[0_0_50px_rgba(255,77,109,0.15)]">
+                <div class="absolute inset-0 opacity-20 pointer-events-none">
+                    <div class="stars-animation"></div>
+                </div>
+                
+                <div class="relative z-10 max-w-2xl mx-auto text-center">
+                    <span class="text-accent-gold font-bold tracking-[0.3em] uppercase text-xs mb-8 block">5 ноября • Послание</span>
+                    <p class="text-xl md:text-2xl font-light leading-relaxed text-pink-50 text-shadow-lg italic">
+                        "Моя душа полыхает ярче тысячу тысяч солнц... ты не просто любимая, ты центр моего мироздания. Весь мой мир танцует вокруг твоего имени. Я не просто люблю — я тобой дышу. Ты моя абсолютная, неповторимая катастрофа счастья..." 🔥🪐
+                    </p>
+                    <div class="mt-10 flex justify-center gap-4">
+                        <img src="https://drive.google.com/uc?export=view&id=14sjI1rRaOEh8Dy2GjNED67dsCJQT6u1S" class="w-20 h-20 rounded-full object-cover border-2 border-pink-500" onclick="openModal(this.src)">
+                        <div class="video-circle w-20 h-20 border-white/30">
+                            <video controls loop><source src="https://drive.google.com/uc?export=view&id=1FXHLZ3V7av9wutKGjkyg-1xBkxePDtgt"></video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="timeline-item mb-40">
+            <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">15 ноября: Долгожданный Киев</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-20">
+                <div class="space-y-8">
+                    <div class="video-circle w-48 h-48 mx-auto border-white/20">
+                        <video controls loop><source src="https://drive.google.com/uc?export=view&id=1XGx7DBtE2mAOszYKBS_VnA4PvFn2HA74"></video>
+                    </div>
+                    <div class="flex justify-center gap-4">
+                        <img src="https://drive.google.com/uc?export=view&id=1IdB1kneAU-ZiteVSy2n6xETyWe9mZTBL" class="photo-frame w-32" onclick="openModal(this.src)">
+                        <img src="https://drive.google.com/uc?export=view&id=1KOG8DiXt5KTj0PsLAwcf3wlHaSC9dqVh" class="photo-frame w-32" onclick="openModal(this.src)">
+                    </div>
+                    <p class="text-center text-gray-300 italic">В общаге... наконец-то вместе 🏠</p>
+                </div>
+                <div class="space-y-8">
+                    <div class="flex justify-center gap-4">
+                        <div class="video-circle w-40 h-40 border-pink-500">
+                            <video controls loop><source src="https://drive.google.com/uc?export=view&id=11TflsFkovC-04XrOeGj8wzQWhVcAfEgF"></video>
+                        </div>
+                        <div class="video-circle w-40 h-40 border-pink-500">
+                            <video controls loop><source src="https://drive.google.com/uc?export=view&id=19-PSfTXVqxKxL5xFPGwkR3QisK6iEcac"></video>
+                        </div>
+                    </div>
+                    <p class="text-center text-pink-300 font-bold">Целуемся)) ✨</p>
+                    <img src="https://drive.google.com/uc?export=view&id=1zVrfExstB5yw20Fx90lKPMaYt0cOyX9w" class="photo-frame w-48 mx-auto rotate-3" onclick="openModal(this.src)">
+                    <p class="text-center text-gray-400 text-sm">за ручки в парку 🤝</p>
+                </div>
+            </div>
+
+            <div class="bg-white/5 backdrop-blur-md p-10 rounded-[60px] border border-white/10 mb-20">
+                <div class="text-center mb-10">
+                    <h3 class="text-3xl font-bold text-accent-gold">16 ноября: Парк Совки 🌲</h3>
+                    <div class="video-circle w-48 h-48 mx-auto mt-6 border-white/30">
+                        <video controls loop><source src="https://drive.google.com/uc?export=view&id=1l5iDARd2sqQ48C_aZhOfSqfe5FwdNx1r"></video>
+                    </div>
+                </div>
+
+                <div class="instagram-grid">
+                    <img src="https://drive.google.com/uc?export=view&id=1m8P-rdg02Cs-FWiG6wIHHSn3LUlOh5eI" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1XJ3x9Fe_Hyp_oJeNpybbVaI3staeSllX" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=170BA5wZi0OmZ5gg2Q-IHoWh9JvsZEUNV" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1yVAOC4Gbsi7HK_m8eZpTH5Znzt0nuOqF" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=14F3IZxbb9rVOqlzyAg-1ktNMx0T6zpeu" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1pbbNlhuPa9EUhuNcGDKPMRkexZPXRXLD" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1gclr2St9xlIr68veCp3v2fLPoy09h_Sy" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=12KfmbRWVyaMcfWDX1BCubFH6fR_zvlXV" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=15QFr21PkglhLtaGdXfh-0-XB4VZ5oKjY" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1uoMwyHpie-dnL9Xa1ZA1Kcxx5WiATIXf" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1YwlGcLj4xvMkkC41ECdzj7kdfJoDLb2h" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1iDcc2iEQiOUcSYIW8pq4Me5mjHvUI2jq" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1_rxBDt3ewNBrWNI3d0T4PpVPu-WCXVzi" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1fr-KSj8QxWu8ixpzlcPhNb2oPSXrVsnm" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1O68N_tOdbOCAGuqOjiHp4QD3eRJgFIil" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1nnkp80e_3eGRSf6_oYxjuwZU92yBQA9x" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1yMpfOP6K8pbUuVBmtlYZ_jziSqKA-9nG" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1pVpMMAzT1-WyWsLVVu-0bJ-EAWjLLcpx" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1GFARbEEP--1WzF_UPVgeyLMd6N0XiR96" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                    <img src="https://drive.google.com/uc?export=view&id=1gZRT3TMsve8p5_qij_3b--O90pvmi2f3" class="hover:scale-110 transition" onclick="openModal(this.src)">
+                </div>
+            </div>
+
+            <div class="relative py-16 bg-gradient-to-t from-black/40 to-transparent rounded-3xl border-t border-white/10 text-center">
+                <p class="text-xl mb-8 italic text-gray-300">Провожаю тебя... Игровые зоны, баскетбол и ожидание 🚂</p>
+                <div class="flex flex-wrap justify-center gap-8">
+                    <div class="video-circle w-32 h-32"><video controls loop><source src="https://drive.google.com/uc?export=view&id=1b0zh-2-n303IqCb7mYVOVHe5i7LwRnXp"></video></div>
+                    <div class="video-circle w-32 h-32"><video controls loop><source src="https://drive.google.com/uc?export=view&id=1ErnUHu43TnzcMPtFL6iT2osUAbPuITiU"></video></div>
+                    <div class="video-circle w-32 h-32"><video controls loop><source src="https://drive.google.com/uc?export=view&id=1LgnqGLoBt2dEFlsAu4TY_ZmGqiwGw__H"></video></div>
+                </div>
+            </div>
+        </section>
+<section class="timeline-item mb-40">
+            <h2 class="text-center text-4xl font-romantic text-blue-200 mb-12">Декабрь: Время тепла и молитв ❄️</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-white/40 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                        <video controls loop><source src="https://drive.google.com/uc?export=view&id=18mZRBujVQUe8UzZpKiYfBo-GiIYx2UQL"></video>
+                    </div>
+                    <p class="text-xs mt-4 text-gray-400 italic">лерочка в храме 🙏</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-pink-400 scale-110">
+                        <video controls loop><source src="https://drive.google.com/uc?export=view&id=155lxDMUiAR0uOYy06PrD5nY_Rt6arnvM"></video>
+                    </div>
+                    <p class="text-xs mt-6 text-pink-200 font-bold">милые щечки 😊</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-white/40">
+                        <video controls loop><source src="https://drive.google.com/uc?export=view&id=1h_Q4iKVbVrp4WeuVyypFueHlRjKoXVAn"></video>
+                    </div>
+                    <p class="text-xs mt-4 text-gray-400 italic">поцелуйчик 💋</p>
+                </div>
+            </div>
+
+            <div class="relative p-1 bg-gradient-to-r from-blue-500/20 via-pink-500/20 to-blue-500/20 rounded-[50px] mb-32">
+                <div class="bg-[#0a0a20]/90 backdrop-blur-3xl p-10 rounded-[48px] border border-white/10 shadow-[0_0_50px_rgba(59,130,246,0.1)]">
+                    <h3 class="text-center text-4xl font-romantic text-accent-gold mb-10 text-xl">Новый Год 2026 🎄</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="bg-white/5 p-6 rounded-3xl border-l-2 border-pink-500">
+                            <span class="text-pink-400 font-bold block mb-4">Лера:</span>
+                            <p class="text-gray-300 italic leading-relaxed text-sm">
+                                "Любимый мой Данечка... спасибо тебе за этот год. Ты стал моим домом, моей крепостью и моей самой большой радостью. Пусть этот год принесет нам еще больше встреч. Люблю тебя бесконечно! ❤️"
+                            </p>
+                        </div>
+                        <div class="bg-white/5 p-6 rounded-3xl border-l-2 border-blue-400">
+                            <span class="text-blue-400 font-bold block mb-4">Даня:</span>
+                            <p class="text-gray-300 italic leading-relaxed text-sm">
+                                "Моя девочка... ты — лучшее, что случилось со мной. Обещаю беречь тебя, радовать и всегда быть рядом, сколько бы километров нас ни разделяло. Ты моя вселенная. ✨"
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10 flex justify-center">
+                        <div class="video-circle w-48 h-48 border-accent-gold shadow-[0_0_30px_rgba(255,183,3,0.3)]">
+                            <video controls loop><source src="https://drive.google.com/uc?export=view&id=10NIDIDva823SLLxZE4nfIOlmo2quDKqM"></video>
+                        </div>
+                    </div>
+                    <p class="text-center mt-4 text-accent-gold italic">29 декабря: Целуемся в Тейсти 💋</p>
+                </div>
+            </div>
+
+            <h2 class="text-center text-3xl font-romantic text-pink-300 mb-12">Настоящее время... и наше будущее ♾️</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-20">
+                <div class="flex flex-col items-center">
+                    <img src="https://drive.google.com/uc?export=view&id=1FZAMBUSHtAN--1j01HN1eY7VoBvufLKv" class="photo-frame w-64 rotate-2" onclick="openModal(this.src)">
+                    <p class="text-xs mt-4 text-gray-400">дома у дани 🏠</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="video-circle border-pink-500">
+                        <video controls loop><source src="https://drive.google.com/uc?export=view&id=1WX7jEv_oFROxY3mzq-73Y896RrS7Qswz"></video>
+                    </div>
+                    <p class="text-xs mt-4 text-pink-300">ох уж это прекрасное платьишко 😍👗</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-20 border-t border-white/10">
+            <div class="text-6xl mb-6">❤️</div>
+            <p class="text-2xl font-romantic text-pink-400 mb-2">To be continued...</p>
+            <p class="text-gray-500 text-sm tracking-widest uppercase">Наша история только начинается</p>
+        </footer>
+    </main>
+
+    <div id="modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex items-center justify-center p-4 cursor-zoom-out" onclick="this.classList.add('hidden')">
+        <img id="modal-img" src="" class="max-w-full max-h-full rounded-lg shadow-2xl border-2 border-white/20">
+    </div>
+
+    <script>
+        // Анимация сердечек
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            heart.style.opacity = Math.random() * 0.5;
+            document.getElementById('heart-bg').appendChild(heart);
+            setTimeout(() => heart.remove(), 15000);
+        }
+        setInterval(createHeart, 300);
+
+        // Появление элементов при скролле
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
+
+        // Функция открытия модалки (уже прописана в тегах img)
+        function openModal(src) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = src;
+            modal.classList.remove('hidden');
+        }
+    </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Исправляем ссылки для видео и фото
+    const videos = document.querySelectorAll('video source');
+    const images = document.querySelectorAll('img');
+
+    function fixDriveUrl(url, type) {
+        if (!url || !url.includes('drive.google.com')) return url;
+        const match = url.match(/\/d\/([^\/]+)/) || url.match(/id=([^\&]+)/);
+        if (match && match[1]) {
+            const id = match[1];
+            // Для фото - картинка, для видео - поток для скачивания/просмотра
+            return type === 'img' 
+                ? `https://drive.google.com/thumbnail?id=${id}&sz=w1000`
+                : `https://drive.google.com/uc?export=download&id=${id}`;
+        }
+        return url;
+    }
+
+    images.forEach(img => {
+        img.src = fixDriveUrl(img.src, 'img');
+        img.style.cursor = 'zoom-in';
+    });
+
+    videos.forEach(v => {
+        v.src = fixDriveUrl(v.src, 'video');
+        v.parentElement.load(); // Важно: перезагружаем плеер с новой ссылкой
+    });
+});
+</script>
+#modal {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+#modal-img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+</body>
+</html>
