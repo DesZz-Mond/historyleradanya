@@ -1,15 +1,6 @@
 const startDate = new Date("2025-08-27T22:57:15");
 
-// УЛУЧШЕННАЯ функция для Google Drive
-function getDirectLink(url) {
-    if (url && url.includes('drive.google.com')) {
-        const id = url.split('/d/')[1].split('/')[0];
-        // Используем формат uc для прямого отображения
-        return `https://drive.google.com/uc?export=view&id=${id}`;
-    }
-    return url;
-}
-
+// Таймер
 function updateTimer() {
     const now = new Date();
     const diff = now - startDate;
@@ -24,77 +15,133 @@ function updateTimer() {
 setInterval(updateTimer, 1000);
 updateTimer();
 
-// ХРОНОЛОГИЯ (Добавили 8 и 12 сентября)
+// ХРОНОЛОГИЯ (Все файлы берутся из корня GitHub)
 const timelineData = [
     {
         date: "6 сентября 2025",
         title: "Первая встреча",
-        type: "video",
-        src: "вторая встреча.mp4", // Если файл лежит рядом с index.html на GitHub
-        photo: "https://drive.google.com/file/d/1LKlLc95WqJg7xeKoWoJMZlDOmWtBA_ph/view?usp=drivesdk"
+        type: "mixed",
+        video: "первая встреча.mp4",
+        photo: "первое фото.jpg"
     },
     {
         date: "6 сентября 2025",
         title: "Первые обнимашки",
         type: "video",
-        src: "Первые обнимашки.mp4"
+        video: "Первые обнимашки.mp4"
     },
     {
         date: "8 сентября 2025",
         title: "Вторые обнимашки",
         type: "video",
-        src: "вторые обнимашки.mp4"
+        video: "вторые обнимашки.mp4"
     },
     {
         date: "12 сентября 2025, 15:10:58",
         title: "ОФИЦИАЛЬНО НАЧАЛИ ОТНОШЕНИЯ ❤️",
         type: "text",
         desc: "Этот момент изменил всё. Мы стали парой официально!"
+    },
+    {
+        date: "16 сентября 2025",
+        title: "Завариваем чайочек",
+        type: "video",
+        video: "завариваем чайочек 16 сентября.mp4"
+    },
+    {
+        date: "17 сентября 2025",
+        title: "Тигрица богиня",
+        type: "video",
+        video: "Тигрица богиня 17 сентября.mp4"
+    },
+    {
+        date: "18 сентября 2025",
+        title: "В переодевалке",
+        type: "video",
+        video: "в переодевалке 18 сентября.mp4"
+    },
+    {
+        date: "19 сентября 2025",
+        title: "После прогулки по Киеву",
+        type: "video",
+        video: "После прогулки по киеву вечером 19 сентября.mp4"
+    },
+    {
+        date: "20 сентября 2025",
+        title: "Топаем на дополнительное",
+        type: "video",
+        video: "топаем на дополнительное 20 сентября.mp4"
+    },
+    {
+        date: "21 сентября 2025",
+        title: "На дне рождения",
+        type: "video",
+        video: "на дне рождения 21 сентября.mp4"
+    },
+    {
+        date: "24 сентября 2025",
+        title: "Впервые поговорили по телефону 📞",
+        type: "text"
+    },
+    {
+        date: "25 сентября 2025",
+        title: "Первый видеозвонок 📹",
+        type: "text"
+    },
+    {
+        date: "26 сентября 2025",
+        title: "Милые волосы",
+        type: "video",
+        video: "милые волосы 26 сентября.mp4"
     }
 ];
 
 const timelineContainer = document.getElementById('timeline');
 
-timelineData.forEach(item => {
-    const section = document.createElement('section');
-    section.className = 'event-card';
-    if(item.title.includes("ОФИЦИАЛЬНО")) section.classList.add('special-event');
-    
-    let mediaHTML = '';
-    
-    if(item.type === 'video') {
-        mediaHTML = `
-            <div class="tg-circle" onclick="togglePlay(this)">
-                <video src="${item.src}" loop playsinline></video>
-                <div class="play-hint">TAP</div>
-            </div>`;
-    }
-    
-    if(item.photo) {
-        mediaHTML += `<img src="${getDirectLink(item.photo)}" class="event-photo" onerror="this.src='https://via.placeholder.com/400?text=Ошибка+загрузки+фото'">`;
-    }
+function renderTimeline() {
+    timelineContainer.innerHTML = '';
+    timelineData.forEach(item => {
+        const section = document.createElement('section');
+        section.className = 'event-card';
+        if(item.title.includes("ОФИЦИАЛЬНО")) section.classList.add('special-event');
+        
+        let contentHTML = '';
+        
+        if(item.video) {
+            contentHTML += `
+                <div class="tg-circle" onclick="togglePlay(this)">
+                    <video src="${item.video}" loop playsinline></video>
+                    <div class="play-hint">TAP</div>
+                </div>`;
+        }
+        
+        if(item.photo) {
+            contentHTML += `<img src="${item.photo}" class="event-photo">`;
+        }
 
-    if(item.desc) {
-        mediaHTML += `<p class="event-desc">${item.desc}</p>`;
-    }
+        if(item.desc) {
+            contentHTML += `<p class="event-desc">${item.desc}</p>`;
+        }
 
-    section.innerHTML = `
-        <div class="event-date">${item.date}</div>
-        <h2 class="event-title">${item.title}</h2>
-        ${mediaHTML}
-    `;
-    timelineContainer.appendChild(section);
-});
+        section.innerHTML = `
+            <div class="event-date">${item.date}</div>
+            <h2 class="event-title">${item.title}</h2>
+            ${contentHTML}
+        `;
+        timelineContainer.appendChild(section);
+    });
+}
 
 function togglePlay(container) {
     const video = container.querySelector('video');
     if (video.paused) {
-        // Чтобы видео загрузилось, принудительно вызываем load если оно не пошло
-        if (video.readyState === 0) video.load(); 
-        video.play().catch(e => console.log("Ошибка видео:", e));
+        video.play().catch(e => console.error("Ошибка воспроизведения:", e));
         container.querySelector('.play-hint').style.opacity = '0';
     } else {
         video.pause();
         container.querySelector('.play-hint').style.opacity = '1';
     }
 }
+
+// Запуск отрисовки
+renderTimeline();
