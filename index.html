@@ -3,806 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Даня + Лера | История Любви</title>
+    <title>Даня + Лера: Наша История</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-pink: #ff4d6d;
-            --deep-dark: #0f0c29;
-            --accent-gold: #ffb703;
-            --text-light: #f8f9fa;
+            --tg-circle-size: 200px;
+            --accent-color: #ff4d6d;
         }
 
         body {
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            background: #0f0f0f;
+            color: #ffffff;
             font-family: 'Montserrat', sans-serif;
-            color: var(--text-light);
             overflow-x: hidden;
         }
 
-        .font-romantic { font-family: 'Pacifico', cursive; }
-        .font-handwritten { font-family: 'Caveat', cursive; }
-
-        .gradient-text {
-            background: linear-gradient(to right, #ff4d6d, #ffb703, #ff4d6d);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite;
+        .romantic-font {
+            font-family: 'Great Vibes', cursive;
         }
 
-        @keyframes shine { to { background-position: 200% center; } }
-
-        .video-circle {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid var(--primary-pink);
-            box-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
-            background: #000;
-            margin: 0 auto;
-            position: relative;
-            /* Исправление для скругления видео в Safari */
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
-        }
-
-        .video-circle video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        #timer-container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 77, 109, 0.3);
-        }
-
-        .timer-val {
-            color: var(--primary-pink);
-            text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
-        }
-
-        .timeline-item {
+        /* Анимация появления при скролле */
+        .reveal {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.8s ease-out;
         }
 
-        .timeline-item.visible {
+        .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .floating-heart {
+        /* Стиль видео-кружочков Telegram */
+        .video-note-container {
+            width: var(--tg-circle-size);
+            height: var(--tg-circle-size);
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--accent-color);
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.4);
+            margin: 0 auto;
+            background: #000;
+        }
+
+        .video-note-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-controls {
             position: absolute;
-            animation: float 15s linear infinite;
-            color: rgba(255, 77, 109, 0.2);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            padding: 10px;
+            display: none;
             pointer-events: none;
         }
 
-        @keyframes float {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        .video-note-container:hover .video-controls {
+            display: block;
         }
 
-        .photo-frame {
-            border-radius: 1rem;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            transition: transform 0.3s;
+        /* Таймлайн */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            padding-left: 20px;
         }
-        .photo-frame:hover { transform: scale(1.05); }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--accent-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::after { left: 20px; }
+        }
+
+        .event-card {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            margin-bottom: 50px;
+            width: 45%;
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .event-card.left { left: 0; }
+        .event-card.right { left: 55%; }
+
+        @media (max-width: 768px) {
+            .event-card { width: 90%; left: 40px !important; }
+        }
+
+        .timer-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        .timer-val {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .timer-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        /* Фотографии */
+        .photo-frame {
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-frame:hover {
+            transform: scale(1.02);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Поэзия */
+        .poem-block {
+            font-style: italic;
+            color: #ffb3c1;
+            line-height: 1.6;
+            border-left: 2px solid var(--accent-color);
+            padding-left: 15px;
+            margin: 15px 0;
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0f0f; }
+        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
     </style>
 </head>
 <body>
-    <div id="heart-bg" class="fixed inset-0 pointer-events-none z-[-1]"></div>
 
-    <header class="min-h-screen flex flex-col items-center justify-center text-center p-6">
-        [cite_start]<h1 class="text-7xl md:text-9xl font-romantic gradient-text mb-8">Лера + Даня</h1> [cite: 21]
+    <!-- Шапка с таймером -->
+    <header class="min-h-screen flex flex-col justify-center items-center text-center p-5 relative">
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none" id="hearts-bg"></div>
         
-        <div id="timer-container" class="rounded-3xl p-8 max-w-2xl w-full mx-4 mb-12 timeline-item">
-            [cite_start]<p class="text-gray-400 uppercase tracking-widest text-sm mb-6 font-semibold">Мы вместе уже:</p> [cite: 21]
-         
-            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                [cite_start]<div><span id="days" class="text-5xl font-bold timer-val">00</span><p class="text-xs text-gray-500 mt-2">дней</p></div> [cite: 22]
-                [cite_start]<div><span id="hours" class="text-5xl font-bold timer-val">00</span><p class="text-xs text-gray-500 mt-2">часов</p></div> [cite: 22]
-                [cite_start]<div><span id="minutes" class="text-5xl font-bold timer-val">00</span><p class="text-xs text-gray-500 mt-2">минут</p></div> [cite: 22]
-                [cite_start]<div><span id="seconds" class="text-5xl font-bold timer-val">00</span><p class="text-xs text-gray-500 mt-2">секунд</p></div> [cite: 22, 23]
-            </div>
-        </div>
+        <h1 class="romantic-font text-7xl md:text-9xl text-pink-500 mb-4 z-10 animate-pulse">Даня & Лера</h1>
+        <p class="text-xl opacity-80 mb-12 z-10">История, которая началась 27 августа 2025 года</p>
 
-        <div class="timeline-item max-w-2xl">
-            <p class="text-2xl font-handwritten italic text-pink-300">
-                Наша история началась 27 августа 2025 года в 22:57:15. ✨
-            [cite_start]</p> [cite: 23, 24]
+        <div id="main-timer" class="flex flex-wrap justify-center z-10 bg-black/40 p-8 rounded-3xl backdrop-blur-md">
+            <!-- Сюда JS вставит время -->
+        </div>
+        
+        <div class="mt-20 animate-bounce z-10">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 pb-20">
-        <section class="timeline-item flex flex-col items-center mb-32 text-center pt-10">
-            <div class="w-20 h-20 bg-pink-600 rounded-full flex items-center justify-center text-white mb-8 shadow-[0_0_20px_rgba(219,39,119,0.6)] animate-pulse">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                [cite_start]</svg> [cite: 24, 25]
-            </div>
-            [cite_start]<h2 class="text-4xl font-bold mb-4 text-pink-400">27 августа 2025</h2> [cite: 25]
-            [cite_start]<p class="text-2xl font-mono text-pink-200 mb-6">22:57:15</p> [cite: 25]
-    
-            <div class="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 max-w-lg shadow-xl">
-                <p class="text-lg italic text-gray-200">
-                    В этот момент началась наша история. Тот самый миг, который изменил всё. ❤️
-                [cite_start]</p> [cite: 26, 27]
-            </div>
-        </section>
-        <section class="timeline-item mb-32">
-            <div class="flex flex-col items-center gap-10">
-                <div class="text-center">
-                    <h3 class="text-4xl font-romantic text-accent-gold mb-2">Первая встреча</h3> [cite: 28]
-                    <p class="text-xl text-gray-400 italic mb-8">6 сентября, вечер</p> [cite: 28]
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div class="flex flex-col items-center gap-4">
-                        <div class="video-circle border-pink-500 shadow-[0_0_25px_rgba(255,77,109,0.4)]" onclick="togglePlay(this)">
-                            <video playsinline muted loop preload="metadata">
-                                <source src="первая встреча.mp4" type="video/mp4"> [cite: 29]
-                            </video>
-                        </div>
-                        <span class="text-sm font-handwritten text-pink-300 text-xl">первая встреча.mp4</span> [cite: 30]
-                    </div>
-
-                    <div class="flex flex-col items-center gap-4">
-                        <img src="https://drive.google.com/uc?export=view&id=1LKlLc95WqJg7xeKoWoJMZlDOmWtBA_ph" 
-                             alt="Первое фото" 
-                             class="rounded-xl border-8 border-white/10 shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 cursor-zoom-in max-w-[280px]"
-                             [cite_start]onclick="openModal(this.src)"> [cite: 31, 32]
-                        <span class="text-sm font-handwritten text-pink-300 text-xl">первое фото.jpg</span> [cite: 32]
-                    </div>
-                </div>
-
-                <div class="mt-10 flex flex-col items-center gap-6">
-                    <div class="bg-white/5 backdrop-blur-sm p-4 rounded-3xl border border-pink-500/30">
-                        <p class="text-center text-gray-200 mb-4 px-4">В этот же вечер — наши самые первые обнимашки...</p> [cite: 33]
-                        <div class="video-circle mx-auto" onclick="togglePlay(this)">
-                            <video playsinline muted loop preload="metadata">
-                                <source src="Первые обнимашки.mp4" type="video/mp4"> [cite: 34]
-                            </video>
-                        </div>
-                    </div>
-                    <span class="text-sm font-handwritten text-pink-300 text-xl">Первые обнимашки.mp4</span> [cite: 35]
-                </div>
-            </div>
-        </section>
-
-        <section class="timeline-item mb-32 flex flex-col items-center">
-            <h3 class="text-3xl font-bold mb-6 text-pink-300">8 сентября</h3> [cite: 36]
-            <div class="video-circle shadow-[0_0_20px_rgba(255,77,109,0.3)]" onclick="togglePlay(this)">
-                <video playsinline muted loop preload="metadata">
-                    <source src="вторые обнимашки.mp4" type="video/mp4"> [cite: 36, 37]
-                </video>
-            </div>
-            <p class="mt-6 text-gray-400 italic">Встретились снова через два дня ❤️</p> [cite: 37]
-            <span class="text-xs font-handwritten text-pink-500/50 mt-2">вторые обнимашки.mp4</span> [cite: 37]
-        </section>
-        <section class="timeline-item mb-40 text-center">
-            <div class="relative inline-block">
-                <div class="absolute -inset-4 bg-pink-600 rounded-3xl blur-xl opacity-20 animate-pulse"></div>
-                <div class="relative bg-white/5 backdrop-blur-xl p-10 rounded-3xl border-2 border-pink-500/50 shadow-[0_0_30px_rgba(255,77,109,0.3)]">
-                    <h3 class="text-5xl font-romantic text-pink-500 mb-6">Официальное начало</h3>
-                    <p class="text-3xl font-bold text-white mb-2">12 сентября</p>
-                    <p class="text-2xl font-mono text-accent-gold">15:10:58</p>
-                    <div class="mt-6 h-px w-full bg-gradient-to-r from-transparent via-pink-500 to-transparent"></div>
-                    <p class="text-gray-300 mt-6 italic">С этого момента мы — одно целое. Навсегда. ✨</p>
-                </div>
-            </div>
-        </section>
-
-        <h2 class="text-center text-5xl font-romantic mb-16 gradient-text">Продолжение сентября</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-32">
-            
-            <div class="timeline-item flex flex-col items-center">
-                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">16 сентября</span>
-                <div class="video-circle shadow-[0_0_15px_rgba(255,255,255,0.1)]" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="завариваем чайочек.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-sm mt-4 italic text-gray-400">завариваем чайочек</p>
-            </div>
-
-            <div class="timeline-item flex flex-col items-center">
-                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">17 сентября</span>
-                <div class="video-circle border-accent-gold shadow-[0_0_20px_rgba(255,183,3,0.3)]" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="Тиграца богиня 17 сентября.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-sm mt-4 text-accent-gold font-semibold uppercase tracking-widest">Тигрица богиня</p>
-            </div>
-
-            <div class="timeline-item flex flex-col items-center">
-                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">18 сентября</span>
-                <div class="video-circle" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="в переодевалке.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-sm mt-4 italic text-gray-400">в переодевалке</p>
-            </div>
-
-            <div class="timeline-item flex flex-col items-center">
-                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">19 сентября</span>
-                <div class="video-circle border-blue-400 shadow-[0_0_20px_rgba(96,165,250,0.3)]" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="вечерний киев.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-sm mt-4 italic text-gray-400">После прогулки по Киеву вечером</p>
-            </div>
-            
-            <div class="timeline-item flex flex-col items-center">
-                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">20 сентября</span>
-                <div class="video-circle" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="на дополнительное.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-sm mt-4 italic text-gray-400">топаем на дополнительное</p>
-            </div>
-
-            <div class="timeline-item flex flex-col items-center">
-                <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">21 сентября</span>
-                <div class="video-circle border-purple-400" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="на дне рождения.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-sm mt-4 italic text-gray-400">на дне рождения</p>
-            </div>
-        </div>
-        <section class="timeline-item mb-32">
-            <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
-                <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-blue-500/30 text-center w-full md:w-1/2 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-                    <div class="text-4xl mb-4">📞</div>
-                    <h3 class="text-2xl font-bold text-blue-300 mb-2">24 сентября</h3>
-                    <p class="text-gray-300 italic">Впервые поговорили по телефону. Твой голос стал еще ближе...</p>
-                </div>
-                <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-purple-500/30 text-center w-full md:w-1/2 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                    <div class="text-4xl mb-4">🎥</div>
-                    <h3 class="text-2xl font-bold text-purple-300 mb-2">25 сентября</h3>
-                    <p class="text-gray-300 italic">Первый видеозвонок. Целый вечер смотрели друг на друга сквозь километры.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="timeline-item mb-32 flex flex-col items-center">
-            <span class="mb-4 font-bold font-handwritten text-2xl text-pink-300">26 сентября</span>
-            <div class="video-circle shadow-[0_0_20px_rgba(255,77,109,0.3)]" onclick="togglePlay(this)">
-                <video playsinline muted loop preload="metadata">
-                    <source src="милые волосы.mp4" type="video/mp4">
-                </video>
-            </div>
-            <p class="mt-4 text-gray-300 italic">милые волосы ✨</p>
-        </section>
-
-        <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">28 сентября: Утро, изменившее пульс</h2>
-        <section class="timeline-item mb-40">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-end">
-                <div class="flex flex-col items-center">
-                    <div class="video-circle border-pink-500 shadow-[0_0_20px_rgba(255,77,109,0.5)]" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="первый поцелуйчик от леры.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-xs mt-4 text-pink-300 text-center font-handwritten text-xl">первый поцелуйчик от леры</p>
-                </div>
-
-                <div class="flex flex-col items-center">
-                    <div class="video-circle border-accent-gold scale-110 shadow-[0_0_30px_rgba(255,183,3,0.4)]" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="РЕАКЦИЯ ДАНИ.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-xs mt-6 text-accent-gold text-center font-bold tracking-widest">реакция на поцелуйчик</p>
-                </div>
-
-                <div class="flex flex-col items-center">
-                    <div class="video-circle border-pink-300" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="красавица.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-xs mt-4 text-pink-200 text-center font-handwritten text-xl">красавица)</p>
-                </div>
-            </div>
-
-            <div class="mt-24 flex flex-col items-center">
-                <div class="bg-white/5 backdrop-blur-lg p-8 rounded-[40px] border border-pink-500/40 relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <p class="text-center text-xl text-gray-200 mb-6 italic">
-                        Тот же день. Служба. Пономарка... <br>Твой первый поцелуй в ответ.</p>
-                    <div class="video-circle mx-auto border-4 border-white/20" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="в пономарке на службе.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-center mt-4 font-bold text-pink-400">в пономарке на службе</p>
-                </div>
-            </div>
-        </section>
-        <section class="timeline-item mb-32">
-            <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">Октябрь: Когда слова становятся стихами</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="flex flex-col items-center">
-                    <div class="video-circle border-pink-500 shadow-[0_0_15px_rgba(255,77,109,0.3)]" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="тоже поцелуйчик 3 октября.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-sm mt-4 text-pink-200 italic">тоже поцелуйчик 3 октября</p>
-                </div>
-
-                <div class="flex flex-col items-center">
-                    <div class="video-circle border-accent-gold" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="5 октября прическа.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-sm mt-4 text-accent-gold italic">5 октября прическа</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="timeline-item mb-32">
-            <div class="relative max-w-2xl mx-auto">
-                <div class="absolute -top-10 -right-5 text-5xl opacity-50">🖋️</div>
-                <div class="poem-box bg-white/5 backdrop-blur-md p-10 rounded-br-[60px] rounded-tl-[60px] border-l-4 border-pink-500 shadow-2xl">
-                    <p class="font-handwritten text-3xl leading-relaxed text-pink-100 italic">
-                        "ты свет в моем мире, как солнышко утром...<br>
-                        смотрю на тебя и не верю ничуть...<br>
-                        ты просто прекрасна и в сердце так шумно...<br>
-                        люблю тебя очень, вот в чем вся моя суть"
-                    </p>
-                    <p class="text-right mt-6 text-pink-400 font-bold tracking-widest">— 10 октября 📝</p>
-                </div>
-            </div>
-        </section>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-40">
-             <div class="flex flex-col items-center">
-                <div class="video-circle scale-90 border-blue-300" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="сонная лерочка.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-xs mt-2 text-gray-400 italic">сонная лерочка</p>
-            </div>
-
-            <div class="flex flex-col items-center">
-                <div class="video-circle scale-90 border-pink-400" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="11 октября.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-xs mt-2 text-gray-400 italic">11 октября 🤍</p>
-            </div>
-
-            <div class="flex flex-col items-center">
-                <div class="video-circle scale-90 border-accent-gold" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="На море.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-xs mt-2 text-gray-400 italic">На море</p>
-            </div>
-        </div>
-
-        <section class="timeline-item mb-40">
-            <div class="relative p-1 bg-gradient-to-b from-pink-500/20 to-transparent rounded-[50px]">
-                <div class="bg-[#1a1645]/80 backdrop-blur-2xl p-8 md:p-12 rounded-[48px] border border-white/10 shadow-2xl">
-                    <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl font-romantic text-accent-gold mb-4">18 октября</h2>
-                        <p class="text-xl text-pink-200 italic font-handwritten text-3xl">Наш Особенный День</p>
-                    </div>
-
-                    <div class="space-y-10 text-center text-gray-200">
-                        <p class="text-lg leading-relaxed max-w-2xl mx-auto">
-                            Первая встреча после более месяца в онлайне. В <span class="text-accent-gold font-bold">13:08</span> случился наш первый настоящий поцелуй. Его нет на камеру, но он навсегда запечатлен в сердце. 💋
-                        </p>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                            <div class="flex flex-col items-center">
-                                <div class="video-circle border-white/20 scale-110" onclick="togglePlay(this)">
-                                    <video playsinline muted loop preload="metadata">
-                                        <source src="первый поцелуй.mp4" type="video/mp4">
-                                    </video>
-                                </div>
-                                <p class="text-xs mt-4 text-gray-400 italic">первый поцелуй.mp4</p>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <img src="https://drive.google.com/uc?export=view&id=1s1rg3n9zHZ9n9C6Q8qs8zur49r0XiQxs" 
-                                     class="rounded-2xl border-4 border-white/10 shadow-xl hover:scale-105 transition-transform cursor-zoom-in w-64"
-                                     onclick="openModal(this.src)">
-                                <p class="text-xs mt-4 text-gray-400 italic">в тейсти.jpg</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-pink-600/10 p-6 rounded-3xl border border-pink-500/20 mt-10">
-                            <p class="font-handwritten text-2xl text-pink-300 mb-2">"В этот день мы купили блокнотики расстояния..." 📓</p>
-                            <p class="text-sm text-gray-400">Чтобы заполнять их в разлуке и меняться при каждой встрече.</p>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-10">
-                            <div class="flex flex-col items-center">
-                                <img src="https://drive.google.com/uc?export=view&id=1DNc6Lma11Ezojr9K-blqU7LXzJqNtNEN" 
-                                     class="rounded-2xl border-4 border-white/10 shadow-xl hover:scale-105 transition-transform cursor-zoom-in w-64"
-                                     onclick="openModal(this.src)">
-                                <p class="text-xs mt-4 text-gray-400 italic">фото поцелуя.jpg</p>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="video-circle border-white/20 scale-90" onclick="togglePlay(this)">
-                                    <video playsinline muted loop preload="metadata">
-                                        <source src="поцелуй в парке.mp4" type="video/mp4">
-                                    </video>
-                                </div>
-                                <p class="text-xs mt-4 text-gray-400 italic">поцелуй в парке.mp4</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="timeline-item mb-40">
-    <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">29 октября: Встреча через 11 дней</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-        <div class="flex flex-col items-center group">
-            <div class="relative">
-                <div class="absolute -inset-2 bg-accent-gold/30 rounded-full blur opacity-0 group-hover:opacity-100 transition"></div>
-                <div class="video-circle border-accent-gold relative" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="обмен блокнотиками.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            <p class="mt-4 text-accent-gold font-bold italic text-center">Поменялись блокнотиками на набережной</p>
-        </div>
-
-        <div class="flex flex-col items-center">
-            <div class="video-circle border-pink-500" onclick="togglePlay(this)">
-                <video playsinline muted loop preload="metadata">
-                    <source src="целуемся 29 октября.mp4" type="video/mp4">
-                </video>
-            </div>
-            <p class="mt-4 text-pink-300 italic">Целуемся))</p>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
-        <img src="https://drive.google.com/uc?export=view&id=1SaVPfG2GZhlxH5zb5FJPdOIRZvmrV5tV" class="rounded-xl photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-        <img src="https://drive.google.com/uc?export=view&id=1adML-TVkHE2AGkUBBmePEumI7-Aqc9jM" class="rounded-xl photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-        <img src="https://drive.google.com/uc?export=view&id=1GrDdnNo9FFYlBZoebE4xBTn-lBqeLfZS" class="rounded-xl photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-    </div>
-
-    <div class="bg-white/5 backdrop-blur-md p-8 rounded-[40px] border border-white/10">
-        <p class="text-center text-gray-400 mb-8 italic">Уже дома... Теплая память друг о друге 🎀</p>
-        <div class="flex flex-col md:flex-row justify-around items-center gap-8">
-            <div class="flex flex-col items-center">
-                <div class="video-circle scale-90 border-pink-300" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="резиночка от лерочки.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-xs mt-3 text-pink-200">резиночка от лерочки</p>
-            </div>
-
-            <div class="flex flex-col items-center">
-                <div class="video-circle scale-90 border-blue-300" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="резиночка от данечки.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-xs mt-3 text-blue-200">резиночка от данечки</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="timeline-item mb-40">
-    <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">Конец октября — Начало ноября</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start mb-20">
-        <div class="flex flex-col items-center">
-            <div class="relative p-2 bg-white/10 rounded-xl shadow-2xl">
-               <div class="absolute -inset-1 bg-gradient-to-tr from-pink-500 to-accent-gold rounded-xl blur opacity-30"></div>
-                <div class="relative bg-black rounded-lg overflow-hidden border border-white/20">
-                    <video controls playsinline class="w-full max-w-[300px]">
-                        <source src="нарисовал лерочку.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            <p class="font-handwritten text-2xl text-accent-gold mt-6">30 октября: Нарисовал Лерочку</p>
-        </div>
-
-        <div class="space-y-12">
-            <div class="flex items-center gap-6">
-                <div class="video-circle w-32 h-32 flex-shrink-0 border-pink-400" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="лерочка поцелуйчик 31 октября.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-gray-300 italic text-sm">31 октября: милая лерочка с поцелуйчиком</p>
-            </div>
-            <div class="flex items-center gap-6">
-                <div class="video-circle w-32 h-32 flex-shrink-0 border-accent-gold" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="лерочка на фоне солнца.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="text-gray-300 italic text-sm">31 октября: на фоне солнышка</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="relative py-20 px-6 overflow-hidden rounded-[60px] border border-pink-500/30 bg-black/40 backdrop-blur-3xl shadow-[0_0_50px_rgba(255,77,109,0.15)]">
-        <div class="relative z-10 max-w-2xl mx-auto text-center">
-            <span class="text-accent-gold font-bold tracking-[0.3em] uppercase text-xs mb-8 block">5 ноября • Послание</span>
-            <p class="text-xl md:text-2xl font-light leading-relaxed text-pink-50 text-shadow-lg italic">
-                "Моя душа полыхает ярче тысячу тысяч солнц... ты не просто любимая, ты центр моего мироздания. Весь мой мир танцует вокруг твоего имени. Я не просто люблю — я тобой дышу..." 🔥🪐
-            </p>
-            <div class="mt-10 flex justify-center gap-4">
-                <img src="https://drive.google.com/uc?export=view&id=14sjI1rRaOEh8Dy2GjNED67dsCJQT6u1S" 
-                     class="w-20 h-20 rounded-full object-cover border-2 border-pink-500" onclick="openModal(this.src)">
-                <div class="video-circle w-20 h-20 border-white/30" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="видео послание 5 ноября.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="timeline-item mb-40">
-    <h2 class="text-center text-4xl font-romantic text-pink-400 mb-12">15 ноября: Долгожданный Киев</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-20">
-        <div class="space-y-8">
-            <div class="video-circle w-48 h-48 mx-auto border-white/20" onclick="togglePlay(this)">
-                <video playsinline muted loop preload="metadata">
-                    <source src="в общаге вместе.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="flex justify-center gap-4">
-                <img src="https://drive.google.com/uc?export=view&id=1IdB1kneAU-ZiteVSy2n6xETyWe9mZTBL" class="photo-frame w-32" onclick="openModal(this.src)">
-                <img src="https://drive.google.com/uc?export=view&id=1KOG8DiXt5KTj0PsLAwcf3wlHaSC9dqVh" class="photo-frame w-32" onclick="openModal(this.src)">
-            </div>
-            <p class="text-center text-gray-300 italic">В общаге... наконец-то вместе</p>
-        </div>
-        <div class="space-y-8">
-            <div class="flex justify-center gap-4">
-                <div class="video-circle w-40 h-40 border-pink-500" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="поцелуй 15 ноября 1.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-circle w-40 h-40 border-pink-500" onclick="togglePlay(this)">
-                    <video playsinline muted loop preload="metadata">
-                        <source src="поцелуй 15 ноября 2.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            <p class="text-center text-pink-300 font-bold">Целуемся)) ✨</p>
-            <img src="https://drive.google.com/uc?export=view&id=1zVrfExstB5yw20Fx90lKPMaYt0cOyX9w" class="photo-frame w-48 mx-auto rotate-3" onclick="openModal(this.src)">
-            <p class="text-center text-gray-400 text-sm">за ручки в парку</p>
-        </div>
-    </div>
-
-    <div class="bg-white/5 backdrop-blur-md p-10 rounded-[60px] border border-white/10 mb-20">
-        <div class="text-center mb-10">
-            <h3 class="text-3xl font-bold text-accent-gold">16 ноября: Парк Совки 🌲</h3>
-            <div class="video-circle w-48 h-48 mx-auto mt-6 border-white/30" onclick="togglePlay(this)">
-                <video playsinline muted loop preload="metadata">
-                    <source src="в парке совки.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            <img src="https://drive.google.com/uc?export=view&id=1m8P-rdg02Cs-FWiG6wIHHSn3LUlOh5eI" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1XJ3x9Fe_Hyp_oJeNpybbVaI3staeSllX" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=170BA5wZi0OmZ5gg2Q-IHoWh9JvsZEUNV" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1yVAOC4Gbsi7HK_m8eZpTH5Znzt0nuOqF" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=14F3IZxbb9rVOqlzyAg-1ktNMx0T6zpeu" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1pbbNlhuPa9EUhuNcGDKPMRkexZPXRXLD" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1gclr2St9xlIr68veCp3v2fLPoy09h_Sy" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=12KfmbRWVyaMcfWDX1BCubFH6fR_zvlXV" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=15QFr21PkglhLtaGdXfh-0-XB4VZ5oKjY" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1uoMwyHpie-dnL9Xa1ZA1Kcxx5WiATIXf" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1YwlGcLj4xvMkkC41ECdzj7kdfJoDLb2h" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1iDcc2iEQiOUcSYIW8pq4Me5mjHvUI2jq" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1_rxBDt3ewNBrWNI3d0T4PpVPu-WCXVzi" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1fr-KSj8QxWu8ixpzlcPhNb2oPSXrVsnm" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1O68N_tOdbOCAGuqOjiHp4QD3eRJgFIil" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1nnkp80e_3eGRSf6_oYxjuwZU92yBQA9x" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1yMpfOP6K8pbUuVBmtlYZ_jziSqKA-9nG" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1pVpMMAzT1-WyWsLVVu-0bJ-EAWjLLcpx" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1GFARbEEP--1WzF_UPVgeyLMd6N0XiR96" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-            <img src="https://drive.google.com/uc?export=view&id=1gZRT3TMsve8p5_qij_3b--O90pvmi2f3" class="photo-frame cursor-zoom-in" onclick="openModal(this.src)">
-        </div>
-    </div>
-
-    <div class="relative py-16 bg-gradient-to-t from-black/40 to-transparent rounded-3xl border-t border-white/10 text-center">
-        <p class="text-xl mb-8 italic text-gray-300">Провожаю тебя... Игровые зоны, баскетбол и ожидание 🚂</p>
-        <div class="flex flex-wrap justify-center gap-8">
-            <div class="video-circle w-32 h-32" onclick="togglePlay(this)">
-                <video playsinline muted loop preload="metadata">
-                    <source src="провожаю тебя 1.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="video-circle w-32 h-32" onclick="togglePlay(this)">
-                <video playsinline muted loop preload="metadata">
-                    <source src="провожаю тебя 2.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="video-circle w-32 h-32" onclick="togglePlay(this)">
-                <video playsinline muted loop preload="metadata">
-                    <source src="провожаю тебя 3.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="timeline-item mb-40">
-            <h2 class="text-center text-4xl font-romantic text-blue-200 mb-12">Декабрь: Время тепла и молитв ❄️</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                <div class="flex flex-col items-center">
-                    <div class="video-circle border-white/40 shadow-[0_0_15px_rgba(255,255,255,0.2)]" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="лерочка в храме.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-xs mt-4 text-gray-400 italic">лерочка в храме 🙏</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="video-circle border-pink-400 scale-110" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="милые щечки.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-xs mt-6 text-pink-200 font-bold">милые щечки 😊</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="video-circle border-white/40" onclick="togglePlay(this)">
-                        <video playsinline muted loop preload="metadata">
-                            <source src="декабрьский поцелуйчик.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <p class="text-xs mt-4 text-gray-400 italic">поцелуйчик 💋</p>
-                </div>
-            </div>
-
-            <div class="relative p-1 bg-gradient-to-r from-blue-500/20 via-pink-500/20 to-blue-500/20 rounded-[50px] mb-32">
-                <div class="bg-[#0a0a20]/90 backdrop-blur-3xl p-10 rounded-[48px] border border-white/10 shadow-[0_0_50px_rgba(59,130,246,0.1)]">
-                    <h3 class="text-center text-4xl font-romantic text-accent-gold mb-10">Новый Год 2026 🎄</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <div class="bg-white/5 p-6 rounded-3xl border-l-2 border-pink-500">
-                            <span class="text-pink-400 font-bold block mb-4">Лера:</span>
-                            <p class="text-gray-300 italic leading-relaxed text-sm">
-                                "Поздравляю тебя, мой лучик света с Новым годом, я очень хочу чтобы мы этот год провели вместе. Желаю чтобы в этом году было много при много теплых моментов! Я верю что этот год будет  намногооо лучше чем старый, тем более старый и так чудесен ведь в нем есть ты, мне очень нравится видеть тебя счастливым) Желаю чтобы весь тот свет в твоем сердце так и продолжал освещать всех близких людей) Предлагаю провести этот год вместе, так же близко как и эти четыре месяца, я тебя очень люблю мой зайчонок, первое я тебя люблю в этом году)"
-                            </p>
-                        </div>
-                        <div class="bg-white/5 p-6 rounded-3xl border-l-2 border-blue-400">
-                            <span class="text-blue-400 font-bold block mb-4">Даня:</span>
-                            <p class="text-gray-300 italic leading-relaxed text-sm">
-                                "Любимая моя зайка с новым годом!
-Вот знаешь если бы еще год назад меня спросили об итогах года я бы наверное, просто перечислил какие то успехи по учебе или просто чего я достиг ну сказал бы дежурное "Ну, год прошел продуктивно, я стал на шаг ближе к целям" и всё
-Но 2025-й стал для меня особенным по одной единственной причине в нем появилась ты теперь оглядываясь назад я понимаю что мое главное достижение и самый большой подарок судьбы это ты. Именно Ты наполнила мою жизнь смыслом, нежностью и тем самым теплом которого мне так не хватало. Спасибо тебе за то, что ты есть хочу, чтобы в 2026-м мы стали еще ближе, и я обещаю делать тебя самой счастливой каждый день ТЫСЯЧИ ТЫСЯЧ РАЗ ЛЮБЛЮ"
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-10 flex justify-center">
-                        <div class="video-circle w-48 h-48 border-accent-gold shadow-[0_0_30px_rgba(255,183,3,0.3)]" onclick="togglePlay(this)">
-                            <video playsinline muted loop preload="metadata">
-                                <source src="целуемся в тейсти 29 декабря.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                    </div>
-                    <p class="text-center mt-4 text-accent-gold italic">29 декабря: Целуемся в Тейсти 💋</p>
-                </div>
-            </div>
-
-            <footer class="text-center py-20 border-t border-white/10">
-                <div class="text-6xl mb-6">❤️</div>
-                <p class="text-2xl font-romantic text-pink-400 mb-2">To be continued...</p>
-                <p class="text-gray-500 text-sm tracking-widest uppercase">Наша история только начинается</p>
-            </footer>
-        </section>
+    <main class="timeline container mx-auto px-4 pb-20" id="content-flow">
+        <!-- Сюда рендерятся события из JS -->
     </main>
 
-    <div id="modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex items-center justify-center p-4 cursor-zoom-out" onclick="this.classList.add('hidden')">
-        <img id="modal-img" src="" class="max-w-full max-h-full rounded-lg shadow-2xl border-2 border-white/20">
-    </div>
+    <footer class="text-center p-10 opacity-50">
+        <p class="romantic-font text-3xl">Продолжение следует...</p>
+        <p class="mt-4">Люблю тебя больше тысячи тысяч солнц</p>
+    </footer>
 
     <script>
-        // Таймер времени вместе [cite: 135, 137]
-        const startDate = new Date("August 27, 2025 22:57:15").getTime();
+        // --- КОНФИГУРАЦИЯ ---
+        const startDate = new Date('2025-08-27T22:57:15');
+        
+        // Функция для корректных ссылок Google Drive
+        const getDriveUrl = (id) => `https://drive.google.com/uc?export=view&id=${id}`;
+
+        // --- ДАННЫЕ ХРОНОЛОГИИ ---
+        const events = [
+            {
+                date: '6 сентября 2025',
+                title: 'Первая встреча',
+                side: 'left',
+                content: [
+                    { type: 'video', src: 'первая встреча.mp4', label: 'первая встреча.mp4' },
+                    { type: 'photo', src: getDriveUrl('1LKlLc95WqJg7xeKoWoJMZlDOmWtBA_ph'), label: 'первое фото.jpg' },
+                    { type: 'text', text: 'В этот же вечер случились наши первые обнимашки.' },
+                    { type: 'video', src: 'Первые обнимашки.mp4', label: 'Первые обнимашки.mp4' }
+                ]
+            },
+            {
+                date: '8 сентября 2025',
+                title: 'Вторая встреча',
+                side: 'right',
+                content: [
+                    { type: 'text', text: 'Встретились через два дня.' },
+                    { type: 'video', src: 'вторые обнимашки.mp4', label: 'вторые обнимашки.mp4' }
+                ]
+            },
+            {
+                date: '12 сентября 2025',
+                title: 'Официально вместе ❤️',
+                side: 'left',
+                content: [
+                    { type: 'text', text: '15:10:58 — момент, когда мы стали парой официально.' }
+                ]
+            },
+            {
+                date: 'Сентябрь 2025',
+                title: 'Продолжение сентября',
+                side: 'right',
+                content: [
+                    { type: 'video', src: 'завариваем чайочек 16 сентября.mp4', label: '16 сентября' },
+                    { type: 'video', src: 'Тигрица богиня 17 сентября.mp4', label: '17 сентября' },
+                    { type: 'video', src: 'в переодевалке 18 сентября.mp4', label: '18 сентября' },
+                    { type: 'video', src: 'После прогулки по киеву вечером 19 сентября.mp4', label: '19 сентября' },
+                    { type: 'video', src: 'топаем на дополнительное 20 сентября.mp4', label: '20 сентября' },
+                    { type: 'video', src: 'на дне рождения 21 сентября.mp4', label: '21 сентября' },
+                    { type: 'text', text: '24 сентября — первый звонок по телефону. 25 сентября — первый видеозвонок.' },
+                    { type: 'video', src: 'милые волосы 26 сентября.mp4', label: '26 сентября' }
+                ]
+            },
+            {
+                date: '28 сентября 2025',
+                title: 'Первый поцелуй (от Леры)',
+                side: 'left',
+                content: [
+                    { type: 'text', text: 'Утро, которое мы никогда не забудем.' },
+                    { type: 'video', src: 'первый поцелуйчик на кружочек 28 сентября.mp4' },
+                    { type: 'text', text: 'Реакция Дани:' },
+                    { type: 'video', src: 'реакция на поцелуйчик.mp4' },
+                    { type: 'video', src: 'красавица) 28 сентября.mp4' },
+                    { type: 'text', text: 'А позже, в пономарке на службе — первый поцелуй от Дани.' },
+                    { type: 'video', src: 'в пономарке на службе 28 сентября.mp4' }
+                ]
+            },
+            {
+                date: '3 - 12 октября 2025',
+                title: 'Октябрьские моменты',
+                side: 'right',
+                content: [
+                    { type: 'video', src: 'тоже поцелуйчик 3 октября.mp4' },
+                    { type: 'video', src: 'поцелуйчик от леры.mp4' },
+                    { type: 'video', src: '5 октября прическа.mp4' },
+                    { type: 'video', src: 'просто даня в зеркале.mp4' },
+                    { type: 'photo', src: getDriveUrl('1A90B4jd4roM96b5MZy20Dl3Dp4LOF2Xc'), label: 'На дне рождения подруги' },
+                    { type: 'video', src: 'сонная лерочка.mp4', label: '7 октября' },
+                    { type: 'video', src: 'На море.mp4', label: 'Кружочек с моря' },
+                    { type: 'poem', text: 'ты свет в моем мире, как солнышко утром\nсмотрю на тебя и не верю ничуть\nты просто прекрасна и в сердце так шумно\nлюблю тебя очень, вот в чем вся моя суть' }
+                ]
+            },
+            {
+                date: '11 - 12 октября 2025',
+                title: 'Поэзия и чувства',
+                side: 'left',
+                content: [
+                    { type: 'video', src: '11 октября.mp4' },
+                    { type: 'poem', text: 'смотрю в твои глаза, и мир затих,\nи этот миг только для нас двоих\nодна лишь мысль мне голову свела\nкак же хочется тебя поцеловать.\n\nНе просто губ коснуться на мгновенье\nа выпить всё твоё сердцебиенье\nчтоб в этом поцелуе утонуть\nи в новый, общий мир открыть нам путь' },
+                    { type: 'poem', text: 'Вот забыть все то что сказано и спето...\n(и далее по тексту вашего прекрасного стиха)' },
+                    { type: 'video', src: 'Еще милый поцелуйчик.mp4', label: '12 октября' }
+                ]
+            },
+            {
+                date: '18 октября 2025',
+                title: 'Встреча после месяца онлайн',
+                side: 'right',
+                content: [
+                    { type: 'text', text: 'День был особенным. В 13:08 — первый поцелуй в жизни (не на камеру).' },
+                    { type: 'video', src: 'первый поцелуй.mp4' },
+                    { type: 'photo', src: getDriveUrl('1s1rg3n9zHZ9n9C6Q8qs8zur49r0XiQxs'), label: 'в тейсти.jpg' },
+                    { type: 'photo', src: getDriveUrl('1DNc6Lma11Ezojr9K-blqU7LXzJqNtNEN'), label: 'фото поцелуя.jpg' },
+                    { type: 'video', src: 'поцелуй в парке.mp4' },
+                    { type: 'text', text: 'Купили блокнотики расстояния.' }
+                ]
+            },
+            {
+                date: '29 октября 2025',
+                title: 'Обмен блокнотиками', side: 'left',
+                content: [
+                    { type: 'video', src: 'поменялись блокнотиками.mp4' },
+                    { type: 'video', src: 'целуемся.mp4' },
+                    { type: 'photo', src: getDriveUrl('1SaVPfG2GZhlxH5zb5FJPdOIRZvmrV5tV'), label: 'За ручки' },
+                    { type: 'photo', src: getDriveUrl('1GrDdnNo9FFYlBZoebE4xBTn-lBqeLfZS'), label: 'совместная.jpg' },
+                    { type: 'video', src: 'резиночка от лерочки.mp4' },
+                    { type: 'video', src: 'резиночка от данечки.mp4' }
+                ]
+            },
+            {
+                date: 'Ноябрь 2025',
+                title: 'Ноябрьская страсть', side: 'right',
+                content: [
+                    { type: 'poem', text: 'Моя душа полыхает ярче тысячу тысяч солнц... ты моя абсолютная неповторимая катастрофа счастья.' },
+                    { type: 'photo', src: getDriveUrl('1HK03PakyVAH2137o_UZoG-yFJxr7zDb4'), label: 'Даня в зеркале' },
+                    { type: 'photo', src: getDriveUrl('1lfDV7pLtPX1ZFKUwryCsNp0NJgtvPsD1'), label: 'Лера на море' },
+                    { type: 'video', src: 'В общаге.mp4', label: '15 ноября' },
+                    { type: 'video', src: 'целуемся)).mp4' },
+                    { type: 'photo', src: getDriveUrl('1zVrfExstB5yw20Fx90lKPMaYt0cOyX9w'), label: 'Парк Совки' }
+                ]
+            },
+            {
+                date: '16 ноября 2025',
+                title: 'Куууча фоточек в парке', side: 'left',
+                content: [
+                    { type: 'text', text: 'Тот самый день, когда мы сделали очень много снимков.' },
+                    { type: 'photo', src: getDriveUrl('1m8P-rdg02Cs-FWiG6wIHHSn3LUlOh5eI'), label: 'Фото 1' },
+                    { type: 'photo', src: getDriveUrl('1XJ3x9Fe_Hyp_oJeNpybbVaI3staeSllX'), label: 'Фото 2' },
+                    { type: 'video', src: 'баскетболист.mp4' },
+                    { type: 'video', src: 'на вокзале.mp4' }
+                ]
+            },
+            {
+                date: 'Декабрь 2025',
+                title: 'Первый снег', side: 'right',
+                content: [
+                    { type: 'video', src: 'милые щечки.mp4', label: '5 декабря' },
+                    { type: 'photo', src: getDriveUrl('1pRYB6jXESOP5ndwdlw_eoST8rowtOXY5'), label: '8 декабря' },
+                    { type: 'video', src: 'кружочек.mp4', label: '14 декабря - Снег!' },
+                    { type: 'photo', src: getDriveUrl('1WO1RDHFAebPkM2rE3dy39u7BtHS2hju3'), label: 'Возле храма' }
+                ]
+            },
+            {
+                date: '1 января 2026',
+                title: 'Новый Год', side: 'left',
+                content: [
+                    { type: 'poem', text: 'Поздравление Дани: "Любимая моя зайка с новым годом! ... ТЫСЯЧИ ТЫСЯЧ РАЗ ЛЮБЛЮ"' },
+                    { type: 'poem', text: 'Поздравление Леры: "Поздравляю тебя, мой лучик света... я тебя очень люблю мой зайчонок"' }
+                ]
+            },
+            {
+                date: 'Январь - Февраль 2026',
+                title: 'У Дани дома и прекрасные платья', side: 'right',
+                content: [
+                    { type: 'photo', src: getDriveUrl('17uVj38RQXR78MANz7ljbE4C_UjKwOFD-'), label: '10 января - Дома' },
+                    { type: 'video', src: 'лерочка в прекрасном платьишке.mp4' },
+                    { type: 'video', src: 'поцелуйчик пытается вырваться наружу.mp4', label: '2 февраля' },
+                    { type: 'photo', src: getDriveUrl('1ogqHGdWicO89pYo3EpnxxPiptPZiMZwH'), label: '7 февраля' }
+                ]
+            }
+        ];
+
+        // --- ЛОГИКА ТАЙМЕРА ---
         function updateTimer() {
-            const kyivTimeStr = new Date().toLocaleString("en-US", { timeZone: "Europe/Kyiv" });
-            const now = new Date(kyivTimeStr).getTime();
-            const distance = now - startDate;
+            const now = new Date();
+            const diff = now - startDate;
 
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((diff / (1000 * 60)) % 60);
+            const secs = Math.floor((diff / 1000) % 60);
 
-            document.getElementById("days").innerHTML = d;
-            document.getElementById("hours").innerHTML = h < 10 ? "0" + h : h;
-            document.getElementById("minutes").innerHTML = m < 10 ? "0" + m : m;
-            document.getElementById("seconds").innerHTML = s < 10 ? "0" + s : s;
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer();
-
-        // Управление видео (адаптация под мобильные и GitHub) [cite: 144, 146]
-        function togglePlay(container) {
-            const video = container.querySelector('video');
-            if (video.paused) {
-                document.querySelectorAll('video').forEach(v => v.pause());
-                video.play().catch(e => console.error("Ошибка воспроизведения:", e));
-                container.style.boxShadow = "0 0 40px rgba(255, 77, 109, 0.8)";
-            } else {
-                video.pause();
-                container.style.boxShadow = "0 0 20px rgba(255, 77, 109, 0.5)";
+            const timerEl = document.getElementById('main-timer');
+            if (timerEl) {
+                timerEl.innerHTML = `
+                    <div class="timer-unit"><span class="timer-val">${days}</span><span class="timer-label">дней</span></div>
+                    <div class="timer-unit"><span class="timer-val">${hours}</span><span class="timer-label">часов</span></div>
+                    <div class="timer-unit"><span class="timer-val">${mins}</span><span class="timer-label">минут</span></div>
+                    <div class="timer-unit"><span class="timer-val">${secs}</span><span class="timer-label">секунд</span></div>
+                `;
             }
         }
 
-        // Оптимизация превью для Google Drive [cite: 148, 149]
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll('img').forEach(img => {
-                const url = img.src;
-                if (url.includes('drive.google.com') && url.includes('id=')) {
-                    const id = url.match(/id=([^\&]+)/)?.[1];
-                    if (id) img.src = `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+        // --- РЕНДЕР КОНТЕНТА ---
+        function renderTimeline() {
+            const container = document.getElementById('content-flow');
+            
+            events.forEach(event => {
+                const card = document.createElement('div');
+                card.className = `event-card ${event.side} reveal`;
+                
+                let contentHtml = `<h3 class="text-pink-500 font-bold text-xl mb-2">${event.date}</h3>`;
+                contentHtml += `<h4 class="text-white text-lg mb-4 opacity-90">${event.title}</h4>`;
+
+                event.content.forEach(item => {
+                    if (item.type === 'video') {
+                        contentHtml += `
+                            <div class="mt-4 mb-4 text-center">
+                                <div class="video-note-container" onclick="toggleVideo(this)">
+                                    <video loop playsinline preload="metadata">
+                                        <source src="${item.src}" type="video/mp4">
+                                    </video>
+                                    <div class="video-controls">
+                                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                                    </div>
+                                </div>
+                                <p class="text-xs opacity-50 mt-1 italic">${item.label || ''}</p>
+                            </div>
+                        `;
+                    } else if (item.type === 'photo') {
+                        contentHtml += `
+                            <div class="photo-frame">
+                                <img src="${item.src}" alt="${item.label}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300?text=Фото+загружается...'">
+                                <p class="text-center text-xs p-2 opacity-60">${item.label || ''}</p>
+                            </div>
+                        `;
+                    } else if (item.type === 'text') {
+                        contentHtml += `<p class="mb-3 text-sm leading-relaxed">${item.text}</p>`;
+                    } else if (item.type === 'poem') {
+                        contentHtml += `<div class="poem-block text-sm whitespace-pre-line">${item.text}</div>`;
+                    }
+                });
+
+                card.innerHTML = contentHtml;
+                container.appendChild(card);
+            });
+        }
+
+        // --- БЕЗОПАСНОЕ УПРАВЛЕНИЕ ВИДЕО (Фикс AbortError) ---
+        async function toggleVideo(container) {
+            const video = container.querySelector('video');
+            const controls = container.querySelector('.video-controls');
+            
+            if (video.paused) {
+                // Останавливаем все другие видео перед запуском текущего
+                const allVideos = document.querySelectorAll('video');
+                for (let v of allVideos) {
+                    if (v !== video) {
+                        v.pause();
+                        const otherControls = v.closest('.video-note-container').querySelector('.video-controls');
+                        if (otherControls) otherControls.style.display = 'block';
+                    }
+                }
+
+                try {
+                    // Пытаемся запустить видео
+                    await video.play();
+                    controls.style.display = 'none';
+                } catch (err) {
+                    // Игнорируем ошибку прерывания (AbortError), она не критична
+                    if (err.name !== 'AbortError') {
+                        console.error("Ошибка воспроизведения:", err);
+                    }
+                }
+            } else {
+                video.pause();
+                controls.style.display = 'block';
+            }
+        }
+
+        // --- АНИМАЦИЯ ПРИ СКРОЛЛЕ ---
+        function handleScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    el.classList.add('active');
                 }
             });
-        });
-
-        // Плавное появление элементов [cite: 150, 151]
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
-
-        function openModal(src) {
-            document.getElementById('modal-img').src = src;
-            document.getElementById('modal').classList.remove('hidden');
         }
 
-        // Анимация сердечек [cite: 152, 154]
+        // --- СЕРДЕЧКИ НА ФОНЕ ---
         function createHeart() {
-            const bg = document.getElementById('heart-bg');
-            if(!bg) return;
+            const container = document.getElementById('hearts-bg');
+            if (!container) return;
             const heart = document.createElement('div');
-            heart.classList.add('floating-heart');
             heart.innerHTML = '❤️';
+            heart.style.position = 'absolute';
             heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
             heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
-            bg.appendChild(heart);
-            setTimeout(() => heart.remove(), 15000);
+            heart.style.opacity = Math.random();
+            heart.style.transition = `transform ${Math.random() * 5 + 5}s linear, opacity 5s`;
+            
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.transform = `translateY(-120vh) rotate(${Math.random() * 360}deg)`;
+            }, 100);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
         }
-        setInterval(createHeart, 400);
+
+        // --- ИНИЦИАЛИЗАЦИЯ ---
+        window.onload = () => {
+            updateTimer();
+            setInterval(updateTimer, 1000);
+            setInterval(createHeart, 500);
+            renderTimeline();
+            handleScroll();
+            window.addEventListener('scroll', handleScroll);
+        };
     </script>
 </body>
 </html>
-
