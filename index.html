@@ -754,13 +754,15 @@
                         <div class="bg-white/5 p-6 rounded-3xl border-l-2 border-pink-500">
                             <span class="text-pink-400 font-bold block mb-4">Лера:</span>
                             <p class="text-gray-300 italic leading-relaxed text-sm">
-                                "Любимый мой Данечка... спасибо тебе за этот год. Ты стал моим домом, моей крепостью и моей самой большой радостью. Пусть этот год принесет нам еще больше встреч. Люблю тебя бесконечно! ❤️"
+                                "Поздравляю тебя, мой лучик света с Новым годом, я очень хочу чтобы мы этот год провели вместе. Желаю чтобы в этом году было много при много теплых моментов! Я верю что этот год будет  намногооо лучше чем старый, тем более старый и так чудесен ведь в нем есть ты, мне очень нравится видеть тебя счастливым) Желаю чтобы весь тот свет в твоем сердце так и продолжал освещать всех близких людей) Предлагаю провести этот год вместе, так же близко как и эти четыре месяца, я тебя очень люблю мой зайчонок, первое я тебя люблю в этом году)"
                             </p>
                         </div>
                         <div class="bg-white/5 p-6 rounded-3xl border-l-2 border-blue-400">
                             <span class="text-blue-400 font-bold block mb-4">Даня:</span>
                             <p class="text-gray-300 italic leading-relaxed text-sm">
-                                "Моя девочка... ты — лучшее, что случилось со мной. Обещаю беречь тебя, радовать и всегда быть рядом, сколько бы километров нас ни разделяло. Ты моя вселенная. ✨"
+                                "Любимая моя зайка с новым годом!
+Вот знаешь если бы еще год назад меня спросили об итогах года я бы наверное, просто перечислил какие то успехи по учебе или просто чего я достиг ну сказал бы дежурное "Ну, год прошел продуктивно, я стал на шаг ближе к целям" и всё
+Но 2025-й стал для меня особенным по одной единственной причине в нем появилась ты теперь оглядываясь назад я понимаю что мое главное достижение и самый большой подарок судьбы это ты. Именно Ты наполнила мою жизнь смыслом, нежностью и тем самым теплом которого мне так не хватало. Спасибо тебе за то, что ты есть хочу, чтобы в 2026-м мы стали еще ближе, и я обещаю делать тебя самой счастливой каждый день ТЫСЯЧИ ТЫСЯЧ РАЗ ЛЮБЛЮ"
                             </p>
                         </div>
                     </div>
@@ -800,42 +802,7 @@
         <img id="modal-img" src="" class="max-w-full max-h-full rounded-lg shadow-2xl border-2 border-white/20">
     </div>
 
-    <script>
-        // Анимация сердечек
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('floating-heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
-            heart.style.opacity = Math.random() * 0.5;
-            document.getElementById('heart-bg').appendChild(heart);
-            setTimeout(() => heart.remove(), 15000);
-        }
-        setInterval(createHeart, 300);
-
-        // Появление элементов при скролле
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
-
-        // Функция открытия модалки (уже прописана в тегах img)
-        function openModal(src) {
-            const modal = document.getElementById('modal');
-            const modalImg = document.getElementById('modal-img');
-            modalImg.src = src;
-            modal.classList.remove('hidden');
-        }
-    </script>
-<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -892,34 +859,45 @@
             cursor: zoom-in;
             margin: 0 auto;
         }
+
+        .floating-heart {
+            position: absolute;
+            animation: float 15s linear infinite;
+            color: rgba(255, 77, 109, 0.2);
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
+    <div id="heart-bg" class="fixed inset-0 pointer-events-none z-[-1]"></div>
 
     <main class="max-w-4xl mx-auto px-6 py-20">
-        
         <section class="timeline-item flex flex-col items-center mb-32 text-center">
             <h2 class="text-4xl font-romantic text-accent-gold mb-10">Наши моменты</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full">
-                
                 <div class="flex flex-col items-center gap-4">
                     <div class="video-circle" onclick="togglePlay(this)">
                         <video playsinline loop preload="metadata">
                             <source src="Первые обнимашки.mp4" type="video/mp4">
                         </video>
                     </div>
-                    <span class="font-handwritten text-pink-300 text-xl">Первые обнимашки.mp4</span>
+                    <span class="font-handwritten text-pink-300 text-xl">Первые обнимашки ❤️</span>
                 </div>
 
                 <div class="flex flex-col items-center gap-4">
-                    <img src="первое фото.jpg" 
+                    <img src="https://drive.google.com/uc?id=1LKlLc95WqJg7xeKoWoJMZlDOmWtBA_ph" 
                          class="photo-frame w-64 shadow-2xl" 
                          onclick="openModal(this.src)"
                          onerror="this.src='https://via.placeholder.com/300?text=Ошибка+загрузки+фото'">
-                    <span class="font-handwritten text-pink-300 text-xl">первое фото.jpg</span>
+                    <span class="font-handwritten text-pink-300 text-xl">Наше первое фото</span>
                 </div>
-
             </div>
         </section>
 
@@ -929,20 +907,22 @@
                     <source src="Тиграца богиня 17 сентября.mp4" type="video/mp4">
                 </video>
             </div>
-            <p class="mt-4 font-handwritten text-pink-300 text-xl">Тиграца богиня.mp4</p>
+            <p class="mt-4 font-handwritten text-pink-300 text-xl">Тиграца богиня 🐯</p>
         </section>
-
     </main>
 
     <div id="modal" class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center p-4" onclick="this.classList.add('hidden')">
-        <img id="modal-img" src="" class="max-w-full max-h-full rounded-lg">
+        <img id="modal-img" src="" class="max-w-full max-h-full rounded-lg shadow-2xl">
     </div>
 
     <script>
+        // Функция управления видео (GitHub файлы)
         function togglePlay(container) {
             const video = container.querySelector('video');
             if (video.paused) {
-                video.play().catch(e => console.error("Ошибка воспроизведения:", e));
+                // Остановить другие видео
+                document.querySelectorAll('video').forEach(v => v.pause());
+                video.play().catch(e => console.error("Ошибка:", e));
                 container.style.boxShadow = "0 0 40px rgba(255, 77, 109, 0.8)";
             } else {
                 video.pause();
@@ -950,18 +930,49 @@
             }
         }
 
+        // Исправление ссылок Google Drive только для ФОТО
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                const url = img.src;
+                if (url.includes('drive.google.com')) {
+                    const id = url.match(/\/d\/([^\/]+)/)?.[1] || url.match(/id=([^\&]+)/)?.[1];
+                    if (id) {
+                        // Превращаем в прямую картинку [cite: 183]
+                        img.src = `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+                    }
+                }
+            });
+        });
+
+        // Плавное появление элементов
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
 
+        // Модальное окно
         function openModal(src) {
             document.getElementById('modal-img').src = src;
             document.getElementById('modal').classList.remove('hidden');
         }
+
+        // Анимация сердечек
+        function createHeart() {
+            const bg = document.getElementById('heart-bg');
+            if(!bg) return;
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            bg.appendChild(heart);
+            setTimeout(() => heart.remove(), 15000);
+        }
+        setInterval(createHeart, 300);
     </script>
 </body>
 </html>
