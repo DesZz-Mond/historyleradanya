@@ -835,17 +835,11 @@
             modal.classList.remove('hidden');
         }
     </script>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Даня + Лера | История Любви</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-pink: #ff4d6d;
-            --deep-dark: #0f0c29;
             --accent-gold: #ffb703;
         }
 
@@ -859,142 +853,103 @@
         .font-romantic { font-family: 'Pacifico', cursive; }
         .font-handwritten { font-family: 'Caveat', cursive; }
 
-        /* Стиль кружочка Telegram */
-        .tg-video-wrapper {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            margin: 0 auto;
-        }
-
+        /* Кружочек Telegram */
         .video-circle {
-            width: 100%;
-            height: 100%;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             overflow: hidden;
             border: 4px solid var(--primary-pink);
-            box-shadow: 0 0 20px rgba(255, 77, 109, 0.4);
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
             background: #000;
             cursor: pointer;
             position: relative;
-            /* Чтобы на iPhone круги не превращались в квадраты при воспроизведении */
+            margin: 0 auto;
             -webkit-mask-image: -webkit-radial-gradient(white, black);
         }
 
         .video-circle video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Видео заполняет круг полностью */
+            object-fit: cover;
         }
-
-        /* Иконка паузы при нажатии (по желанию) */
-        .video-circle::after {
-            content: 'II';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            color: white;
-            opacity: 0;
-            transition: opacity 0.2s;
-            pointer-events: none;
-        }
-        .video-circle.paused::after { opacity: 0.5; }
 
         .timeline-item {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.8s ease-out;
         }
+
         .timeline-item.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Сердечки на фоне */
-        .floating-heart {
-            position: absolute;
-            animation: float 15s linear infinite;
-            color: rgba(255, 77, 109, 0.2);
-            pointer-events: none;
-            z-index: -1;
-        }
-        @keyframes float {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        .photo-frame {
+            border-radius: 15px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+            cursor: zoom-in;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
-    <div id="heart-bg" class="fixed inset-0 pointer-events-none"></div>
 
-    <header class="min-h-screen flex flex-col items-center justify-center text-center p-6">
-        <h1 class="text-6xl md:text-8xl font-romantic text-pink-500 mb-8">Лера + Даня</h1>
-        <p class="text-2xl font-handwritten text-pink-200">Наша история в моментах</p>
-    </header>
-
-    <main class="max-w-4xl mx-auto px-6 pb-20">
+    <main class="max-w-4xl mx-auto px-6 py-20">
         
-        <section class="timeline-item mb-20 text-center">
-            <h3 class="text-3xl font-romantic text-accent-gold mb-6">Первое видео из ТГ</h3>
+        <section class="timeline-item flex flex-col items-center mb-32 text-center">
+            <h2 class="text-4xl font-romantic text-accent-gold mb-10">Наши моменты</h2>
             
-            <div class="tg-video-wrapper">
-                <div class="video-circle" onclick="togglePlay(this)">
-                    <video playsinline loop preload="metadata">
-                        <source src="videos/video1.mp4" type="video/mp4">
-                    </video>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full">
+                
+                <div class="flex flex-col items-center gap-4">
+                    <div class="video-circle" onclick="togglePlay(this)">
+                        <video playsinline loop preload="metadata">
+                            <source src="Первые обнимашки.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <span class="font-handwritten text-pink-300 text-xl">Первые обнимашки.mp4</span>
                 </div>
-                <p class="mt-4 font-handwritten text-pink-300 text-lg">Нажми на кружочек ❤️</p>
+
+                <div class="flex flex-col items-center gap-4">
+                    <img src="первое фото.jpg" 
+                         class="photo-frame w-64 shadow-2xl" 
+                         onclick="openModal(this.src)"
+                         onerror="this.src='https://via.placeholder.com/300?text=Ошибка+загрузки+фото'">
+                    <span class="font-handwritten text-pink-300 text-xl">первое фото.jpg</span>
+                </div>
+
             </div>
         </section>
 
-        <section class="timeline-item mb-20 text-center">
-            <h3 class="text-3xl font-romantic text-accent-gold mb-6">Наш особенный момент</h3>
-            
-            <div class="tg-video-wrapper">
-                <div class="video-circle" onclick="togglePlay(this)">
-                    <video playsinline loop preload="metadata">
-                        <source src="videos/video2.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="mt-4 font-handwritten text-pink-300 text-lg">Смотреть со звуком</p>
+        <section class="timeline-item mb-32 text-center">
+            <div class="video-circle" onclick="togglePlay(this)">
+                <video playsinline loop preload="metadata">
+                    <source src="Тиграца богиня 17 сентября.mp4" type="video/mp4">
+                </video>
             </div>
+            <p class="mt-4 font-handwritten text-pink-300 text-xl">Тиграца богиня.mp4</p>
         </section>
 
     </main>
 
+    <div id="modal" class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center p-4" onclick="this.classList.add('hidden')">
+        <img id="modal-img" src="" class="max-w-full max-h-full rounded-lg">
+    </div>
+
     <script>
-        // Функция управления видео
         function togglePlay(container) {
             const video = container.querySelector('video');
             if (video.paused) {
-                // Останавливаем все другие видео перед запуском этого
-                document.querySelectorAll('video').forEach(v => v.pause());
-                document.querySelectorAll('.video-circle').forEach(c => c.classList.remove('paused'));
-                
-                video.play();
-                container.classList.remove('paused');
+                video.play().catch(e => console.error("Ошибка воспроизведения:", e));
+                container.style.boxShadow = "0 0 40px rgba(255, 77, 109, 0.8)";
             } else {
                 video.pause();
-                container.classList.add('paused');
+                container.style.boxShadow = "0 0 20px rgba(255, 77, 109, 0.5)";
             }
         }
 
-        // Сердечки на фоне
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
-            document.getElementById('heart-bg').appendChild(heart);
-            setTimeout(() => heart.remove(), 15000);
-        }
-        setInterval(createHeart, 500);
-
-        // Появление элементов при скролле
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -1002,6 +957,11 @@
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
+
+        function openModal(src) {
+            document.getElementById('modal-img').src = src;
+            document.getElementById('modal').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
