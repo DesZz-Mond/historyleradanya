@@ -8,24 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-       /* Замени старые стили .timeline-item на эти */
-.timeline-item {
-    margin-bottom: 60px;
-    opacity: 1; /* Теперь они видны сразу */
-    transform: none; 
-    animation: fadeInUp 1s ease-out; /* Анимация при загрузке */
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --accent-color: #ff2e63;
+            --text-color: #e0e0e0;
+            --tg-border: #333;
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -37,7 +26,6 @@
             line-height: 1.6;
         }
 
-        /* Анимированный фон с сердечками */
         #hearts-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -58,7 +46,6 @@
             100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
-        /* Заголовок и Таймер */
         header {
             height: 100vh;
             display: flex;
@@ -95,24 +82,20 @@
             color: var(--accent-color);
         }
 
-        /* Хронология */
         .timeline {
             max-width: 900px;
             margin: 50px auto;
             padding: 20px;
-            position: relative;
         }
 
         .timeline-item {
             margin-bottom: 60px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+            animation: fadeInUp 1s ease-out forwards;
         }
 
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .date-badge {
@@ -125,12 +108,12 @@
             margin-bottom: 15px;
         }
 
-        /* Стили для контента */
         .content-card {
             background: var(--card-bg);
             border-radius: 20px;
             padding: 25px;
             border-left: 4px solid var(--accent-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .poem {
@@ -142,7 +125,6 @@
             border-left: 2px solid #555;
         }
 
-        /* Telegram Video Circle Style */
         .tg-video-wrapper {
             width: 280px;
             height: 280px;
@@ -152,8 +134,7 @@
         }
 
         .tg-video {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
             border-radius: 50%;
             border: 3px solid var(--tg-border);
@@ -167,30 +148,17 @@
             background: rgba(0,0,0,0.4);
             border-radius: 50%;
             width: 60px; height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
+            display: flex; justify-content: center; align-items: center;
             transition: 0.3s;
         }
-
-        .tg-video-wrapper:hover .video-overlay { opacity: 1; }
 
         .media-photo {
             max-width: 100%;
             border-radius: 15px;
             margin-top: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        footer {
-            text-align: center;
-            padding: 50px;
-            font-family: 'Pacifico', cursive;
-            font-size: 1.5rem;
-            color: var(--accent-color);
-        }
-
+        footer { text-align: center; padding: 100px 20px; font-family: 'Pacifico', cursive; color: var(--accent-color); font-size: 2rem; }
     </style>
 </head>
 <body>
@@ -199,13 +167,11 @@
 
 <header>
     <h1>Даня & Лера</h1>
-    <div id="timer">
-        </div>
+    <div id="timer"></div>
 </header>
 
 <div class="timeline" id="main-timeline">
-    </div>
-<div class="timeline-item">
+    <div class="timeline-item">
         <div class="date-badge">27 августа 2025 • 22:57:15</div>
         <div class="content-card">
             <h3>Момент, когда всё началось ❤️</h3>
@@ -217,32 +183,14 @@
         <div class="date-badge">6 сентября 2025</div>
         <div class="content-card">
             <h3>Первая встреча</h3>
-            <p>Вечер, который мы не забудем никогда.</p>
-            
             <div class="tg-video-wrapper" onclick="toggleVideo(this)">
                 <video class="tg-video" src="первая встреча.mp4" loop playsinline></video>
                 <div class="video-overlay"><i class="fas fa-play"></i></div>
             </div>
-
-            <img src="первое фото.jpg" alt="Первое фото" class="media-photo">
-            
-            <div style="margin-top:20px;">
-                <h4>Первые обнимашки</h4>
-                <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                    <video class="tg-video" src="Первые обнимашки.mp4" loop playsinline></video>
-                    <div class="video-overlay"><i class="fas fa-play"></i></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="date-badge">8 сентября 2025</div>
-        <div class="content-card">
-            <h3>Вторые обнимашки</h3>
-            <p>Всего два дня спустя, а тянет друг к другу всё сильнее...</p>
+            <img src="первое фото.jpg" class="media-photo">
+            <h4 style="margin-top:20px;">Первые обнимашки</h4>
             <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="вторые обнимашки.mp4" loop playsinline></video>
+                <video class="tg-video" src="Первые обнимашки.mp4" loop playsinline></video>
                 <div class="video-overlay"><i class="fas fa-play"></i></div>
             </div>
         </div>
@@ -252,144 +200,13 @@
         <div class="date-badge">12 сентября 2025 • 15:10:58</div>
         <div class="content-card" style="border-color: #ff2e63; background: linear-gradient(145deg, #1a1a1a, #2a1015);">
             <h2 style="color: var(--accent-color);">Официальное начало отношений 💍</h2>
-            <p>Теперь мы — одно целое. С этого момента мы официально Даня и Лера.</p>
+            <p>Теперь мы — одно целое.</p>
         </div>
     </div>
 
     <div class="timeline-item">
-        <div class="date-badge">Сентябрь: Продолжение</div>
+        <div class="date-badge">Октябрь 2025: Стихи и Поцелуи</div>
         <div class="content-card">
-            <h3>Немного кружочков сентября</h3>
-            
-            <p><strong>16 сентября:</strong> Завариваем чайочек ☕</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="завариваем чайочек 16 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p><strong>17 сентября:</strong> Тигрица богиня 🐯</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="Тигрица богиня 17 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p><strong>18 сентября:</strong> В переодевалке ✨</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="в переодевалке 18 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p><strong>19 сентября:</strong> После прогулки по Киеву вечером 🌃</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="После прогулки по киеву вечером 19 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p><strong>20 сентября:</strong> Топаем на дополнительное 📚</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="топаем на дополнительное 20 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p><strong>21 сентября:</strong> На дне рождения 🎉</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="на дне рождения 21 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p><strong>26 сентября:</strong> Милые волосы 💇‍♀️</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="милые волосы 26 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="date-badge">24 - 28 сентября</div>
-        <div class="content-card">
-            <p><i class="fas fa-phone"></i> <strong>24 сентября:</strong> Впервые поговорили по телефону</p>
-            <p><i class="fas fa-video"></i> <strong>25 сентября:</strong> Наш первый видеозвонок</p>
-            
-            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #333;">
-            
-            <h3>28 сентября: Утро поцелуйчиков</h3>
-            <p>Первый поцелуйчик от Леры ❤️</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="первый поцелуйчик на кружочек 28 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p>Реакция Дани (в то же утро):</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="реакция на поцелуйчик.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p>Красавица!) ✨</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="красавица) 28 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <h3>Служба в храме</h3>
-            <p>В пономарке первый поцелуйчик от Дани:</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="в пономарке на службе 28 сентября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-        </div>
-        <div class="timeline-item">
-        <div class="date-badge">3 - 5 октября 2025</div>
-        <div class="content-card">
-            <p><strong>3 октября:</strong> Вечерний поцелуйчик от Дани ✨</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="тоже поцелуйчик 3 октября.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p>И ответный поцелуйчик от Леры в тот же вечер:</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="поцелуйчик от леры.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #333;">
-
-            <p><strong>5 октября:</strong> Лерочка показывает прическу) 🎀</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="5 октября прическа.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p>Просто Даня в зеркале:</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="просто даня в зеркале.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p>Лера на дне рождения у подруги:</p>
-            <img src="на дне рождения у подруги.jpg" alt="На дне рождения" class="media-photo">
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="date-badge">7 - 10 октября 2025</div>
-        <div class="content-card">
-            <p><strong>7 октября:</strong> Сонная Лерочка перед службой 🥱</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="сонная лерочка.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p>Кружочек с моря 🌊</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="На море.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #333;">
-            
             <p><strong>10 октября:</strong> Стихотворение от Дани ✍️</p>
             <div class="poem">
                 Ты свет в моем мире, как солнышко утром
@@ -397,162 +214,52 @@
                 Ты просто прекрасна и в сердце так шумно
                 Люблю тебя очень, вот в чем вся моя суть
             </div>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="date-badge">11 - 12 октября 2025</div>
-        <div class="content-card">
-            <p><strong>11 октября:</strong> Милый поцелуйчик от лерочки)</p>
+            <p><strong>11 октября:</strong> Поцелуйчик от Лерочки</p>
             <div class="tg-video-wrapper" onclick="toggleVideo(this)">
                 <video class="tg-video" src="11 октября.mp4" loop playsinline></video>
                 <div class="video-overlay"><i class="fas fa-play"></i></div>
             </div>
-
-            <div class="poem">
-                Смотрю в твои глаза, и мир затих,
-                И этот миг только для нас двоих
-                Одна лишь мысль мне голову свела
-                Как же хочется тебя поцеловать.
-
-                Не просто губ коснуться на мгновенье
-                А выпить всё твоё сердцебиенье
-                Чтоб в этом поцелуе утонуть
-                И в новый, общий мир открыть нам путь
-            </div>
-
-            <div class="poem">
-                Вот забыть все то что сказано и спето
-                И увидеть в глазках твоих осколки света
-                Ловить твоих ресниц волнующий полет и чувствовать как время стало 
-                И на мгновение предстало предо мной: одна мысль
-                Сияние прекрасных губ твоих прекрасных и в этом свете, в этой тишине ответ единственный доверился бы мне.
-
-                Не хочется их трогать, нарушая сказку,
-                А хочется губами прочитать подсказку,
-                И разгадать тот тайный, сладкий код
-                Что в вечность за собой меня зовет
-            </div>
-
-            <p><strong>12 октября:</strong> Еще милый поцелуйчик от Леры:</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="Еще милый поцелуйчик.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
         </div>
     </div>
 
     <div class="timeline-item">
-        <div class="date-badge" style="background: #e91e63;">18 октября 2025 • 13:08</div>
-        <div class="content-card" style="border-left: 5px solid #e91e63;">
-            <h3 style="color: #ff85a1;">Первая встреча спустя месяц в онлайне ✨</h3>
-            <p>Этот день был для нас особенным. В 13:08 случился поцелуй, который не попал на камеру, но навсегда остался в сердце.</p>
-            <p>Мы купили себе <strong>блокнотики расстояния</strong>, чтобы заполнять их и меняться при встречах. 📖</p>
-            
-            <p>Но поцелуи на камеру всё же были! Пожалуй, одни из самых первых:</p>
+        <div class="date-badge">18 октября 2025 • 13:08</div>
+        <div class="content-card">
+            <h3 style="color: #ff85a1;">Встреча спустя месяц ✨</h3>
+            <p>Купили блокнотики расстояния 📖</p>
             <div class="tg-video-wrapper" onclick="toggleVideo(this)">
                 <video class="tg-video" src="первый поцелуй.mp4" loop playsinline></video>
                 <div class="video-overlay"><i class="fas fa-play"></i></div>
             </div>
-
-            <img src="в тейсти.jpg" alt="В Тейсти" class="media-photo">
-            <img src="фото поцелуя.jpg" alt="Фото поцелуя" class="media-photo">
-
-            <p>Поцелуй в парке:</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="поцелуй в парке.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
+            <img src="фото поцелуя.jpg" class="media-photo">
         </div>
     </div>
+</div>
 
-    <div class="timeline-item">
-        <div class="date-badge">22 - 31 октября 2025</div>
-        <div class="content-card">
-            <p><strong>22 октября:</strong> Настроение побаловаться 🤪</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="настроение побаловаться.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <h3 style="margin-top:20px;">29 октября: Новая встреча через 11 дней</h3>
-            <p>Обменялись блокнотиками на набережной 📝</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="поменялись блокнотиками.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p>Целуемся...))</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="целуемся.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <img src="За ручки.jpg" alt="За ручки" class="media-photo">
-            <img src="За ручки2.jpg" alt="За ручки 2" class="media-photo">
-            <img src="совместная.jpg" alt="Совместная фото" class="media-photo">
-
-            <p>Вечерние резиночки:</p>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <div class="tg-video-wrapper" style="width: 140px; height: 140px;" onclick="toggleVideo(this)">
-                    <video class="tg-video" src="резиночка от лерочки.mp4" loop playsinline></video>
-                </div>
-                <div class="tg-video-wrapper" style="width: 140px; height: 140px;" onclick="toggleVideo(this)">
-                    <video class="tg-video" src="резиночка от данечки.mp4" loop playsinline></video>
-                </div>
-            </div>
-
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #333;">
-
-            <p><strong>30 октября:</strong> Даня нарисовал Лерочку 🎨</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="нарисовал лерочку.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-
-            <p><strong>31 октября:</strong> Милая Лерочка с поцелуйчиком и на фоне солнышка ☀️</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="милая лерочка с поцелуйчиком.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="на фоне солнышка.mp4" loop playsinline></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-        </div>
-    </div>
-    </div>
-<footer id="footer-text">
-    </footer>
+<footer>Продолжение следует... ❤️</footer>
 
 <script>
-    // --- 1. Создание падающих сердечек ---
     function createHearts() {
         const bg = document.getElementById('hearts-bg');
-        const heartIcons = ['❤️', '💖', '💝', '💕'];
         setInterval(() => {
             const heart = document.createElement('div');
             heart.className = 'heart-particle';
-            heart.innerHTML = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+            heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.duration = (Math.random() * 3 + 3) + 's';
-            heart.style.animationDuration = heart.style.duration;
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
             bg.appendChild(heart);
             setTimeout(() => heart.remove(), 6000);
         }, 300);
     }
 
-    // --- 2. Живой таймер ---
     const startDate = new Date('2025-08-27T22:57:15');
-
     function updateTimer() {
         const now = new Date();
         const diff = now - startDate;
-
-        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const secs = Math.floor((diff % (1000 * 60)) / 1000);
@@ -567,54 +274,21 @@
         `;
     }
 
-    // --- 3. Управление видео (Telegram Style) ---
     function toggleVideo(container) {
         const video = container.querySelector('video');
-        const icon = container.querySelector('i');
+        const overlay = container.querySelector('.video-overlay');
         if (video.paused) {
             video.play();
-            icon.className = 'fas fa-pause';
-            setTimeout(() => { container.querySelector('.video-overlay').style.opacity = '0'; }, 500);
+            overlay.style.opacity = '0';
         } else {
             video.pause();
-            icon.className = 'fas fa-play';
-            container.querySelector('.video-overlay').style.opacity = '1';
+            overlay.style.opacity = '1';
         }
     }
-// Обновленная функция для появления элементов
-    function initScrollAnimation() {
-        const items = document.querySelectorAll('.timeline-item');
-        items.forEach(item => {
-            // Если элемент уже в поле зрения или мы проскроллили мимо — показываем
-            if (item.getBoundingClientRect().top < window.innerHeight) {
-                item.classList.add('visible');
-            }
-            observer.observe(item);
-        });
-    }
 
-    // Запускаем при загрузке
     createHearts();
     setInterval(updateTimer, 1000);
     updateTimer();
-    initScrollAnimation();
-
-    // Добавим этот хак: если при скролле что-то не появилось, принудительно проверяем
-    window.addEventListener('scroll', () => {
-        document.querySelectorAll('.timeline-item:not(.visible)').forEach(item => {
-            if (item.getBoundingClientRect().top < window.innerHeight * 0.9) {
-                item.classList.add('visible');
-            }
-        });
-    });
-    document.querySelectorAll('.timeline-item').forEach(item => observer.observe(item));
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
