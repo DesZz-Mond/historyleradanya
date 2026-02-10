@@ -159,9 +159,45 @@
         }
 
         footer { text-align: center; padding: 100px 20px; font-family: 'Pacifico', cursive; color: var(--accent-color); font-size: 2rem; }
+        /* Стиль для окна увеличения */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    cursor: zoom-out;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255,46,99,0.5);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Добавим курсор лупы на все фото */
+.media-photo, .timeline-item img {
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+}
+
+.media-photo:hover, .timeline-item img:hover {
+    transform: scale(1.02);
+}
     </style>
 </head>
 <body>
+    <div id="imageModal" class="modal" onclick="this.style.display='none'"><img id="modalImg"></div>
 
 <div id="hearts-bg"></div>
 
@@ -259,9 +295,15 @@
         <div class="date-badge">3 - 7 октября 2025</div>
         <div class="content-card">
             <p><strong>3 октября:</strong> Обмен поцелуйчиками вечером 💋</p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="тоже поцелуйчик 3 октября.mp4" loop></video></div>
-                <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="поцелуйчик от леры.mp4" loop></video></div>
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <div class="tg-video-wrapper" onclick="toggleVideo(this)">
+        <video class="tg-video" src="тоже поцелуйчик 3 октября.mp4" loop></video>
+        <div class="video-overlay"><i class="fas fa-play"></i></div>
+    </div>
+    <div class="tg-video-wrapper" onclick="toggleVideo(this)">
+        <video class="tg-video" src="поцелуйчик от леры.mp4" loop></video>
+        <div class="video-overlay"><i class="fas fa-play"></i></div>
+    </div>
             </div>
             <p><strong>5 октября:</strong> Прическа 🎀 и Даня в зеркале</p>
             <div class="tg-video-wrapper" onclick="toggleVideo(this)"><video class="tg-video" src="5 октября прическа.mp4" loop></video></div>
@@ -360,10 +402,16 @@
             <img src="фото в общаге.jpg" class="media-photo">
             
             <p>Целуемся)) ❤️</p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="целуемся)).mp4" loop></video></div>
-                <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="еще целуемся.mp4" loop></video></div>
-            </div>
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <div class="tg-video-wrapper" onclick="toggleVideo(this)">
+        <video class="tg-video" src="целуемся)).mp4" loop></video>
+        <div class="video-overlay"><i class="fas fa-play"></i></div>
+    </div>
+    <div class="tg-video-wrapper" onclick="toggleVideo(this)">
+        <video class="tg-video" src="еще целуемся.mp4" loop></video>
+        <div class="video-overlay"><i class="fas fa-play"></i></div>
+    </div>
+</div>
 
             <p><strong>16 ноября:</strong> Парк Совки и очень много фото 🌳</p>
             <div class="tg-video-wrapper" onclick="toggleVideo(this)"><video class="tg-video" src="парк совки.mp4" loop></video></div>
@@ -385,10 +433,14 @@
 
             <p style="margin-top:15px;">Провожаю Лерочку... Игровые автоматы на вокзале 🏀</p>
             <div class="tg-video-wrapper" onclick="toggleVideo(this)"><video class="tg-video" src="баскетболист.mp4" loop></video></div>
-            <p>Ждем поезд:</p>
-            <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="на вокзале.mp4" loop></video></div>
         </div>
+<p style="margin-top:15px;">Ждем поезд:</p>
+<div class="tg-video-wrapper" onclick="toggleVideo(this)">
+    <video class="tg-video" src="на вокзале.mp4" loop></video>
+    <div class="video-overlay"><i class="fas fa-play"></i></div>
+</div>
     </div>
+
 
     <div class="timeline-item">
         <div class="date-badge">21 - 30 ноября 2025</div>
@@ -429,12 +481,20 @@
             <div class="tg-video-wrapper" onclick="toggleVideo(this)"><video class="tg-video" src="прекрасные губки.mp4" loop></video></div>
 
             <p><strong>11-12 декабря:</strong> Приветы от Дани и Лерочка с кисточкой 🎨</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)"><video class="tg-video" src="язычок.mp4" loop></video></div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="даня махает.mp4" loop></video></div>
-                <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="милая с кисточкой за ушком.mp4" loop></video></div>
-            </div>
-        </div>
+<div class="tg-video-wrapper" onclick="toggleVideo(this)">
+    <video class="tg-video" src="язычок.mp4" loop></video>
+    <div class="video-overlay"><i class="fas fa-play"></i></div>
+</div>
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <div class="tg-video-wrapper" onclick="toggleVideo(this)">
+        <video class="tg-video" src="даня махает.mp4" loop></video>
+        <div class="video-overlay"><i class="fas fa-play"></i></div>
+    </div>
+    <div class="tg-video-wrapper" onclick="toggleVideo(this)">
+        <video class="tg-video" src="милая с кисточкой за ушком.mp4" loop></video>
+        <div class="video-overlay"><i class="fas fa-play"></i></div>
+    </div>
+</div>
     </div>
 
     <div class="timeline-item">
@@ -502,14 +562,20 @@
         <div class="date-badge">20 - 28 января 2026</div>
         <div class="content-card">
             <p><strong>20-22 января:</strong> Лерочка в том самом прекрасном платьишке 👗 ✨</p>
-            <div class="tg-video-wrapper" onclick="toggleVideo(this)">
-                <video class="tg-video" src="лерочка в прекрасном платьишке.mp4" loop></video>
-                <div class="video-overlay"><i class="fas fa-play"></i></div>
-            </div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="в платьишке.mp4" loop></video></div>
-                <div class="tg-video-wrapper" style="width:130px; height:130px;" onclick="toggleVideo(this)"><video class="tg-video" src="ох уж это прекрасное платьишко.mp4" loop></video></div>
-            </div>
+<div class="tg-video-wrapper" onclick="toggleVideo(this)">
+    <video class="tg-video" src="лерочка в прекрасном платьишке.mp4" loop></video>
+    <div class="video-overlay"><i class="fas fa-play"></i></div>
+</div>
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <div class="tg-video-wrapper" onclick="toggleVideo(this)">
+        <video class="tg-video" src="в платьишке.mp4" loop></video>
+        <div class="video-overlay"><i class="fas fa-play"></i></div>
+    </div>
+    <div class="tg-video-wrapper" onclick="toggleVideo(this)">
+        <video class="tg-video" src="ох уж это прекрасное платьишко.mp4" loop></video>
+        <div class="video-overlay"><i class="fas fa-play"></i></div>
+    </div>
+</div>            </div>
 
             <p style="margin-top:15px;"><strong>28 января:</strong> Привет из лета ☀️</p>
             <div class="tg-video-wrapper" onclick="toggleVideo(this)">
@@ -523,10 +589,10 @@
         <div class="date-badge">Февраль 2026</div>
         <div class="content-card">
             <p><strong>1 февраля:</strong> С Акимчиком и Елисеем 👦👦</p>
-            <div style="display:flex; gap:10px;">
-                <img src="с акимчиком.jpg" style="width:48%; border-radius:10px;">
-                <img src="с елисеем.jpg" style="width:48%; border-radius:10px;">
-            </div>
+<div style="display:flex; gap:10px; align-items: stretch;">
+    <img src="с акимчиком.jpg" style="width: 48%; height: 250px; object-fit: cover; border-radius: 10px;">
+    <img src="с елисеем.jpg" style="width: 48%; height: 250px; object-fit: cover; border-radius: 10px;">
+</div>
 
             <p style="margin-top:15px;"><strong>2 февраля:</strong> Поцелуйчик, который пытается вырваться наружу 💋</p>
             <div class="tg-video-wrapper" onclick="toggleVideo(this)">
@@ -569,23 +635,21 @@
     function updateTimer() {
         const now = new Date();
         const diff = now - startDate;
-        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
-        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+
+        // Расчет только дней, часов, минут и секунд
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const secs = Math.floor((diff % (1000 * 60)) / 1000);
 
+        // Вывод обновленного формата
         document.getElementById('timer').innerHTML = `
-            <div class="timer-unit"><span>${years}</span>лет</div>
-            <div class="timer-unit"><span>${months}</span>мес</div>
             <div class="timer-unit"><span>${days}</span>дн</div>
             <div class="timer-unit"><span>${hours}</span>ч</div>
             <div class="timer-unit"><span>${mins}</span>мин</div>
             <div class="timer-unit"><span>${secs}</span>сек</div>
         `;
     }
-
     function toggleVideo(container) {
         const video = container.querySelector('video');
         const overlay = container.querySelector('.video-overlay');
@@ -601,9 +665,19 @@
     createHearts();
     setInterval(updateTimer, 1000);
     updateTimer();
+    // Функция для увеличения фото
+document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'IMG' && e.target.id !== 'modalImg') {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        modal.style.display = 'flex';
+        modalImg.src = e.target.src;
+    }
+});
 </script>
 </body>
 </html>
+
 
 
 
