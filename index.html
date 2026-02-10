@@ -570,23 +570,37 @@
             container.querySelector('.video-overlay').style.opacity = '1';
         }
     }
-
-    // --- 4. Анимация появления при скролле ---
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
+// Обновленная функция для появления элементов
+    function initScrollAnimation() {
+        const items = document.querySelectorAll('.timeline-item');
+        items.forEach(item => {
+            // Если элемент уже в поле зрения или мы проскроллили мимо — показываем
+            if (item.getBoundingClientRect().top < window.innerHeight) {
+                item.classList.add('visible');
+            }
+            observer.observe(item);
         });
-    }, { threshold: 0.1 });
+    }
 
-    // Инициализация
+    // Запускаем при загрузке
     createHearts();
     setInterval(updateTimer, 1000);
     updateTimer();
-    document.querySelectorAll('.timeline-item').forEach(item => observer.observe(item));
+    initScrollAnimation();
+
+    // Добавим этот хак: если при скролле что-то не появилось, принудительно проверяем
+    window.addEventListener('scroll', () => {
+        document.querySelectorAll('.timeline-item:not(.visible)').forEach(item => {
+            if (item.getBoundingClientRect().top < window.innerHeight * 0.9) {
+                item.classList.add('visible');
+            }
+        });
+    });
 </script>
 
 </body>
 </html>
+
 
 
 
