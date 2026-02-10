@@ -3,26 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Даня + Лера: Наша История</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <title>Даня & Лера: Наша История</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-bg: #fdfcfb;
+            --accent-color: #ffafbd;
+            --text-color: #4a4a4a;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Шапка с таймером */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle, rgba(255,175,189,0.2) 0%, rgba(255,255,255,0) 70%);
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            color: #d4a5a5;
+            margin-bottom: 20px;
+            animation: fadeInDown 1.5s ease;
+        }
+
+        .timer-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .timer-label { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.7; }
+        #timer { font-size: 1.5rem; font-weight: 300; }
+
+        /* Таймлайн */
+        .timeline {
+            max-width: 900px;
+            margin: 50px auto;
+            position: relative;
+            padding: 20px;
+        }
+
+        .event {
+            margin-bottom: 100px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .event.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .date-badge {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(255,175,189,0.4);
+        }
+
+        /* Видео-кружочки (Telegram Style) */
+        .video-circle-container {
+            width: 280px;
+            height: 280px;
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .video-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: var(--shadow);
+            background: #eee;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.1);
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+
+        .video-circle-container:hover .video-overlay { opacity: 1; }
+
+        /* Фотографии */
+        .photo-card {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 5px solid white;
+            margin-top: 15px;
+        }
+
+        .event-text {
+            font-size: 1.1rem;
+            font-weight: 300;
+            margin: 15px 0;
+        }
+
+        /* Анимации */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 3.5rem; }
+            .video-circle-container { width: 220px; height: 220px; }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="background-animation"></div>
-
-    <header class="main-header">
-        <h1 class="couple-names">Даня & Лера</h1>
-        <p class="start-date">История началась 27 августа 2025 года</p>
-        
-        <div id="love-timer" class="timer-container">
-            Загрузка времени...
+    <header>
+        <h1>Даня & Лера</h1>
+        <div class="timer-container">
+            <div class="timer-label">Мы вместе уже:</div>
+            <div id="timer">Загрузка времени...</div>
         </div>
     </header>
 
-    <main id="timeline" class="timeline-container">
-        </main>
+    <div class="timeline" id="timeline">
+        
+        <div class="event">
+            <div class="date-badge">27 августа 2025, 22:57:15</div>
+            <div class="event-text">Момент, когда всё началось. Наша искра, ставшая началом большой истории.</div>
+        </div>
 
-    <script src="script.js"></script>
+        <div class="event">
+            <div class="date-badge">6 сентября 2025</div>
+            <div class="event-text">Наша самая первая встреча вечером. Незабываемые эмоции и то самое первое фото.</div>
+            
+            <div class="video-circle-container" onclick="toggleVideo(this)">
+                <video class="video-circle" src="./первая встреча.mp4" playsinline loop></video>
+                <div class="video-overlay">▶️ / ⏸️</div>
+            </div>
+
+            <img src="./первое фото.jpg" alt="Первое фото" class="photo-card">
+
+            <div class="event-text" style="margin-top: 40px;">В этот же вечер случились наши первые обнимашки...</div>
+            <div class="video-circle-container" onclick="toggleVideo(this)">
+                <video class="video-circle" src="./Первые обнимашки.mp4" playsinline loop></video>
+                <div class="video-overlay">▶️ / ⏸️</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ТАЙМЕР
+        const startDate = new Date('2025-08-27T22:57:15');
+
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('timer').innerHTML = 
+                `${days}д ${hours}ч ${minutes}м ${seconds}с`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // ВИДЕО-КРУЖОЧКИ (Пауза/Плей)
+        function toggleVideo(container) {
+            const video = container.querySelector('video');
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+
+        // АНИМАЦИЯ ПОЯВЛЕНИЯ (Scroll Reveal)
+        const observerOptions = { threshold: 0.2 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.event').forEach(event => observer.observe(event));
+    </script>
 </body>
 </html>
