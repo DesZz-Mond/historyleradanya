@@ -3,28 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Даня & Лера: Наша История</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>Даня + Лера: История любви</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root {
-            --main-bg: #fdfcfb;
-            --accent-color: #ffafbd;
-            --text-color: #4a4a4a;
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
-            --glass: rgba(255, 255, 255, 0.7);
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --accent-color: #ff2e63;
+            --text-color: #e0e0e0;
+            --tg-border: #333;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Шапка с таймером */
+        /* Анимированный фон с сердечками */
+        #hearts-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: var(--accent-color);
+            opacity: 0.3;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) scale(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Заголовок и Таймер */
         header {
             height: 100vh;
             display: flex;
@@ -32,45 +55,51 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: radial-gradient(circle, rgba(255,175,189,0.2) 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle, rgba(255,46,99,0.1) 0%, rgba(10,10,10,1) 70%);
         }
 
         h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 5rem;
-            color: #d4a5a5;
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            color: var(--accent-color);
             margin-bottom: 20px;
-            animation: fadeInDown 1.5s ease;
+            text-shadow: 0 0 20px rgba(255,46,99,0.5);
         }
 
-        .timer-container {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255,255,255,0.3);
+        #timer {
+            background: var(--card-bg);
+            padding: 20px 40px;
+            border-radius: 50px;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 15px rgba(255,46,99,0.3);
+            font-size: 1.2rem;
+            display: flex;
+            gap: 15px;
         }
 
-        .timer-label { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.7; }
-        #timer { font-size: 1.5rem; font-weight: 300; }
+        .timer-unit span {
+            display: block;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
 
-        /* Таймлайн */
+        /* Хронология */
         .timeline {
             max-width: 900px;
             margin: 50px auto;
-            position: relative;
             padding: 20px;
+            position: relative;
         }
 
-        .event {
-            margin-bottom: 100px;
+        .timeline-item {
+            margin-bottom: 60px;
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s ease;
+            transition: all 0.8s ease-out;
         }
 
-        .event.visible {
+        .timeline-item.visible {
             opacity: 1;
             transform: translateY(0);
         }
@@ -80,14 +109,30 @@
             background: var(--accent-color);
             color: white;
             padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
+            border-radius: 20px;
+            font-weight: bold;
             margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(255,175,189,0.4);
         }
 
-        /* Видео-кружочки (Telegram Style) */
-        .video-circle-container {
+        /* Стили для контента */
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .poem {
+            font-style: italic;
+            color: #ff85a1;
+            white-space: pre-line;
+            margin: 15px 0;
+            padding-left: 15px;
+            border-left: 2px solid #555;
+        }
+
+        /* Telegram Video Circle Style */
+        .tg-video-wrapper {
             width: 280px;
             height: 280px;
             margin: 20px 0;
@@ -95,134 +140,133 @@
             cursor: pointer;
         }
 
-        .video-circle {
+        .tg-video {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             object-fit: cover;
-            border: 4px solid white;
-            box-shadow: var(--shadow);
-            background: #eee;
+            border-radius: 50%;
+            border: 3px solid var(--tg-border);
+            background: #000;
         }
 
         .video-overlay {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.4);
             border-radius: 50%;
+            width: 60px; height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(0,0,0,0.1);
-            transition: opacity 0.3s;
             opacity: 0;
+            transition: 0.3s;
         }
 
-        .video-circle-container:hover .video-overlay { opacity: 1; }
+        .tg-video-wrapper:hover .video-overlay { opacity: 1; }
 
-        /* Фотографии */
-        .photo-card {
+        .media-photo {
             max-width: 100%;
             border-radius: 15px;
-            box-shadow: var(--shadow);
-            border: 5px solid white;
             margin-top: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .event-text {
-            font-size: 1.1rem;
-            font-weight: 300;
-            margin: 15px 0;
+        footer {
+            text-align: center;
+            padding: 50px;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            color: var(--accent-color);
         }
 
-        /* Анимации */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 3.5rem; }
-            .video-circle-container { width: 220px; height: 220px; }
-        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Даня & Лера</h1>
-        <div class="timer-container">
-            <div class="timer-label">Мы вместе уже:</div>
-            <div id="timer">Загрузка времени...</div>
+<div id="hearts-bg"></div>
+
+<header>
+    <h1>Даня & Лера</h1>
+    <div id="timer">
         </div>
-    </header>
+</header>
 
-    <div class="timeline" id="timeline">
-        
-        <div class="event">
-            <div class="date-badge">27 августа 2025, 22:57:15</div>
-            <div class="event-text">Момент, когда всё началось. Наша искра, ставшая началом большой истории.</div>
-        </div>
-
-        <div class="event">
-            <div class="date-badge">6 сентября 2025</div>
-            <div class="event-text">Наша самая первая встреча вечером. Незабываемые эмоции и то самое первое фото.</div>
-            
-            <div class="video-circle-container" onclick="toggleVideo(this)">
-                <video class="video-circle" src="./первая встреча.mp4" playsinline loop></video>
-                <div class="video-overlay">▶️ / ⏸️</div>
-            </div>
-
-            <img src="./первое фото.jpg" alt="Первое фото" class="photo-card">
-
-            <div class="event-text" style="margin-top: 40px;">В этот же вечер случились наши первые обнимашки...</div>
-            <div class="video-circle-container" onclick="toggleVideo(this)">
-                <video class="video-circle" src="./Первые обнимашки.mp4" playsinline loop></video>
-                <div class="video-overlay">▶️ / ⏸️</div>
-            </div>
-        </div>
-
+<div class="timeline" id="main-timeline">
     </div>
 
-    <script>
-        // ТАЙМЕР
-        const startDate = new Date('2025-08-27T22:57:15');
+<footer id="footer-text">
+    </footer>
 
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
+<script>
+    // --- 1. Создание падающих сердечек ---
+    function createHearts() {
+        const bg = document.getElementById('hearts-bg');
+        const heartIcons = ['❤️', '💖', '💝', '💕'];
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart-particle';
+            heart.innerHTML = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.duration = (Math.random() * 3 + 3) + 's';
+            heart.style.animationDuration = heart.style.duration;
+            bg.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }, 300);
+    }
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / 1000 / 60) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
+    // --- 2. Живой таймер ---
+    const startDate = new Date('2025-08-27T22:57:15');
 
-            document.getElementById('timer').innerHTML = 
-                `${days}д ${hours}ч ${minutes}м ${seconds}с`;
+    function updateTimer() {
+        const now = new Date();
+        const diff = now - startDate;
+
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('timer').innerHTML = `
+            <div class="timer-unit"><span>${years}</span>лет</div>
+            <div class="timer-unit"><span>${months}</span>мес</div>
+            <div class="timer-unit"><span>${days}</span>дн</div>
+            <div class="timer-unit"><span>${hours}</span>ч</div>
+            <div class="timer-unit"><span>${mins}</span>мин</div>
+            <div class="timer-unit"><span>${secs}</span>сек</div>
+        `;
+    }
+
+    // --- 3. Управление видео (Telegram Style) ---
+    function toggleVideo(container) {
+        const video = container.querySelector('video');
+        const icon = container.querySelector('i');
+        if (video.paused) {
+            video.play();
+            icon.className = 'fas fa-pause';
+            setTimeout(() => { container.querySelector('.video-overlay').style.opacity = '0'; }, 500);
+        } else {
+            video.pause();
+            icon.className = 'fas fa-play';
+            container.querySelector('.video-overlay').style.opacity = '1';
         }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+    }
 
-        // ВИДЕО-КРУЖОЧКИ (Пауза/Плей)
-        function toggleVideo(container) {
-            const video = container.querySelector('video');
-            if (video.paused) {
-                video.play();
-            } else {
-                video.pause();
-            }
-        }
+    // --- 4. Анимация появления при скролле ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.1 });
 
-        // АНИМАЦИЯ ПОЯВЛЕНИЯ (Scroll Reveal)
-        const observerOptions = { threshold: 0.2 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+    // Инициализация
+    createHearts();
+    setInterval(updateTimer, 1000);
+    updateTimer();
+</script>
 
-        document.querySelectorAll('.event').forEach(event => observer.observe(event));
-    </script>
 </body>
 </html>
