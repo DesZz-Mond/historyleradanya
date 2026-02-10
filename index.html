@@ -8,13 +8,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root {
-            --bg-color: #0a0a0a;
-            --card-bg: #1a1a1a;
-            --accent-color: #ff2e63;
-            --text-color: #e0e0e0;
-            --tg-border: #333;
-        }
+       /* Замени старые стили .timeline-item на эти */
+.timeline-item {
+    margin-bottom: 60px;
+    opacity: 1; /* Теперь они видны сразу */
+    transform: none; 
+    animation: fadeInUp 1s ease-out; /* Анимация при загрузке */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -601,6 +612,7 @@
 
 </body>
 </html>
+
 
 
 
